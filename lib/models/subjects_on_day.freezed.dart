@@ -19,31 +19,19 @@ class _$SubjectsOnDayTearOff {
   const _$SubjectsOnDayTearOff();
 
   _SubjectsOnDay call(
-      {SubjectFromTable? firstEven,
-      SubjectFromTable? firstNotEven,
-      SubjectFromTable? secondEven,
-      SubjectFromTable? secondNotEven,
-      SubjectFromTable? thirdEven,
-      SubjectFromTable? thirdNotEven,
-      SubjectFromTable? fourthEven,
-      SubjectFromTable? fourthNotven,
-      SubjectFromTable? fifthEven,
-      SubjectFromTable? fifthNotEven,
-      SubjectFromTable? sixthEven,
-      SubjectFromTable? sixthNotEven}) {
+      {SubjectFromTable? first,
+      SubjectFromTable? second,
+      SubjectFromTable? third,
+      SubjectFromTable? fourth,
+      SubjectFromTable? fifth,
+      SubjectFromTable? sixth}) {
     return _SubjectsOnDay(
-      firstEven: firstEven,
-      firstNotEven: firstNotEven,
-      secondEven: secondEven,
-      secondNotEven: secondNotEven,
-      thirdEven: thirdEven,
-      thirdNotEven: thirdNotEven,
-      fourthEven: fourthEven,
-      fourthNotven: fourthNotven,
-      fifthEven: fifthEven,
-      fifthNotEven: fifthNotEven,
-      sixthEven: sixthEven,
-      sixthNotEven: sixthNotEven,
+      first: first,
+      second: second,
+      third: third,
+      fourth: fourth,
+      fifth: fifth,
+      sixth: sixth,
     );
   }
 }
@@ -53,18 +41,12 @@ const $SubjectsOnDay = _$SubjectsOnDayTearOff();
 
 /// @nodoc
 mixin _$SubjectsOnDay {
-  SubjectFromTable? get firstEven => throw _privateConstructorUsedError;
-  SubjectFromTable? get firstNotEven => throw _privateConstructorUsedError;
-  SubjectFromTable? get secondEven => throw _privateConstructorUsedError;
-  SubjectFromTable? get secondNotEven => throw _privateConstructorUsedError;
-  SubjectFromTable? get thirdEven => throw _privateConstructorUsedError;
-  SubjectFromTable? get thirdNotEven => throw _privateConstructorUsedError;
-  SubjectFromTable? get fourthEven => throw _privateConstructorUsedError;
-  SubjectFromTable? get fourthNotven => throw _privateConstructorUsedError;
-  SubjectFromTable? get fifthEven => throw _privateConstructorUsedError;
-  SubjectFromTable? get fifthNotEven => throw _privateConstructorUsedError;
-  SubjectFromTable? get sixthEven => throw _privateConstructorUsedError;
-  SubjectFromTable? get sixthNotEven => throw _privateConstructorUsedError;
+  SubjectFromTable? get first => throw _privateConstructorUsedError;
+  SubjectFromTable? get second => throw _privateConstructorUsedError;
+  SubjectFromTable? get third => throw _privateConstructorUsedError;
+  SubjectFromTable? get fourth => throw _privateConstructorUsedError;
+  SubjectFromTable? get fifth => throw _privateConstructorUsedError;
+  SubjectFromTable? get sixth => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $SubjectsOnDayCopyWith<SubjectsOnDay> get copyWith =>
@@ -77,31 +59,19 @@ abstract class $SubjectsOnDayCopyWith<$Res> {
           SubjectsOnDay value, $Res Function(SubjectsOnDay) then) =
       _$SubjectsOnDayCopyWithImpl<$Res>;
   $Res call(
-      {SubjectFromTable? firstEven,
-      SubjectFromTable? firstNotEven,
-      SubjectFromTable? secondEven,
-      SubjectFromTable? secondNotEven,
-      SubjectFromTable? thirdEven,
-      SubjectFromTable? thirdNotEven,
-      SubjectFromTable? fourthEven,
-      SubjectFromTable? fourthNotven,
-      SubjectFromTable? fifthEven,
-      SubjectFromTable? fifthNotEven,
-      SubjectFromTable? sixthEven,
-      SubjectFromTable? sixthNotEven});
+      {SubjectFromTable? first,
+      SubjectFromTable? second,
+      SubjectFromTable? third,
+      SubjectFromTable? fourth,
+      SubjectFromTable? fifth,
+      SubjectFromTable? sixth});
 
-  $SubjectFromTableCopyWith<$Res>? get firstEven;
-  $SubjectFromTableCopyWith<$Res>? get firstNotEven;
-  $SubjectFromTableCopyWith<$Res>? get secondEven;
-  $SubjectFromTableCopyWith<$Res>? get secondNotEven;
-  $SubjectFromTableCopyWith<$Res>? get thirdEven;
-  $SubjectFromTableCopyWith<$Res>? get thirdNotEven;
-  $SubjectFromTableCopyWith<$Res>? get fourthEven;
-  $SubjectFromTableCopyWith<$Res>? get fourthNotven;
-  $SubjectFromTableCopyWith<$Res>? get fifthEven;
-  $SubjectFromTableCopyWith<$Res>? get fifthNotEven;
-  $SubjectFromTableCopyWith<$Res>? get sixthEven;
-  $SubjectFromTableCopyWith<$Res>? get sixthNotEven;
+  $SubjectFromTableCopyWith<$Res>? get first;
+  $SubjectFromTableCopyWith<$Res>? get second;
+  $SubjectFromTableCopyWith<$Res>? get third;
+  $SubjectFromTableCopyWith<$Res>? get fourth;
+  $SubjectFromTableCopyWith<$Res>? get fifth;
+  $SubjectFromTableCopyWith<$Res>? get sixth;
 }
 
 /// @nodoc
@@ -115,200 +85,104 @@ class _$SubjectsOnDayCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? firstEven = freezed,
-    Object? firstNotEven = freezed,
-    Object? secondEven = freezed,
-    Object? secondNotEven = freezed,
-    Object? thirdEven = freezed,
-    Object? thirdNotEven = freezed,
-    Object? fourthEven = freezed,
-    Object? fourthNotven = freezed,
-    Object? fifthEven = freezed,
-    Object? fifthNotEven = freezed,
-    Object? sixthEven = freezed,
-    Object? sixthNotEven = freezed,
+    Object? first = freezed,
+    Object? second = freezed,
+    Object? third = freezed,
+    Object? fourth = freezed,
+    Object? fifth = freezed,
+    Object? sixth = freezed,
   }) {
     return _then(_value.copyWith(
-      firstEven: firstEven == freezed
-          ? _value.firstEven
-          : firstEven // ignore: cast_nullable_to_non_nullable
+      first: first == freezed
+          ? _value.first
+          : first // ignore: cast_nullable_to_non_nullable
               as SubjectFromTable?,
-      firstNotEven: firstNotEven == freezed
-          ? _value.firstNotEven
-          : firstNotEven // ignore: cast_nullable_to_non_nullable
+      second: second == freezed
+          ? _value.second
+          : second // ignore: cast_nullable_to_non_nullable
               as SubjectFromTable?,
-      secondEven: secondEven == freezed
-          ? _value.secondEven
-          : secondEven // ignore: cast_nullable_to_non_nullable
+      third: third == freezed
+          ? _value.third
+          : third // ignore: cast_nullable_to_non_nullable
               as SubjectFromTable?,
-      secondNotEven: secondNotEven == freezed
-          ? _value.secondNotEven
-          : secondNotEven // ignore: cast_nullable_to_non_nullable
+      fourth: fourth == freezed
+          ? _value.fourth
+          : fourth // ignore: cast_nullable_to_non_nullable
               as SubjectFromTable?,
-      thirdEven: thirdEven == freezed
-          ? _value.thirdEven
-          : thirdEven // ignore: cast_nullable_to_non_nullable
+      fifth: fifth == freezed
+          ? _value.fifth
+          : fifth // ignore: cast_nullable_to_non_nullable
               as SubjectFromTable?,
-      thirdNotEven: thirdNotEven == freezed
-          ? _value.thirdNotEven
-          : thirdNotEven // ignore: cast_nullable_to_non_nullable
-              as SubjectFromTable?,
-      fourthEven: fourthEven == freezed
-          ? _value.fourthEven
-          : fourthEven // ignore: cast_nullable_to_non_nullable
-              as SubjectFromTable?,
-      fourthNotven: fourthNotven == freezed
-          ? _value.fourthNotven
-          : fourthNotven // ignore: cast_nullable_to_non_nullable
-              as SubjectFromTable?,
-      fifthEven: fifthEven == freezed
-          ? _value.fifthEven
-          : fifthEven // ignore: cast_nullable_to_non_nullable
-              as SubjectFromTable?,
-      fifthNotEven: fifthNotEven == freezed
-          ? _value.fifthNotEven
-          : fifthNotEven // ignore: cast_nullable_to_non_nullable
-              as SubjectFromTable?,
-      sixthEven: sixthEven == freezed
-          ? _value.sixthEven
-          : sixthEven // ignore: cast_nullable_to_non_nullable
-              as SubjectFromTable?,
-      sixthNotEven: sixthNotEven == freezed
-          ? _value.sixthNotEven
-          : sixthNotEven // ignore: cast_nullable_to_non_nullable
+      sixth: sixth == freezed
+          ? _value.sixth
+          : sixth // ignore: cast_nullable_to_non_nullable
               as SubjectFromTable?,
     ));
   }
 
   @override
-  $SubjectFromTableCopyWith<$Res>? get firstEven {
-    if (_value.firstEven == null) {
+  $SubjectFromTableCopyWith<$Res>? get first {
+    if (_value.first == null) {
       return null;
     }
 
-    return $SubjectFromTableCopyWith<$Res>(_value.firstEven!, (value) {
-      return _then(_value.copyWith(firstEven: value));
+    return $SubjectFromTableCopyWith<$Res>(_value.first!, (value) {
+      return _then(_value.copyWith(first: value));
     });
   }
 
   @override
-  $SubjectFromTableCopyWith<$Res>? get firstNotEven {
-    if (_value.firstNotEven == null) {
+  $SubjectFromTableCopyWith<$Res>? get second {
+    if (_value.second == null) {
       return null;
     }
 
-    return $SubjectFromTableCopyWith<$Res>(_value.firstNotEven!, (value) {
-      return _then(_value.copyWith(firstNotEven: value));
+    return $SubjectFromTableCopyWith<$Res>(_value.second!, (value) {
+      return _then(_value.copyWith(second: value));
     });
   }
 
   @override
-  $SubjectFromTableCopyWith<$Res>? get secondEven {
-    if (_value.secondEven == null) {
+  $SubjectFromTableCopyWith<$Res>? get third {
+    if (_value.third == null) {
       return null;
     }
 
-    return $SubjectFromTableCopyWith<$Res>(_value.secondEven!, (value) {
-      return _then(_value.copyWith(secondEven: value));
+    return $SubjectFromTableCopyWith<$Res>(_value.third!, (value) {
+      return _then(_value.copyWith(third: value));
     });
   }
 
   @override
-  $SubjectFromTableCopyWith<$Res>? get secondNotEven {
-    if (_value.secondNotEven == null) {
+  $SubjectFromTableCopyWith<$Res>? get fourth {
+    if (_value.fourth == null) {
       return null;
     }
 
-    return $SubjectFromTableCopyWith<$Res>(_value.secondNotEven!, (value) {
-      return _then(_value.copyWith(secondNotEven: value));
+    return $SubjectFromTableCopyWith<$Res>(_value.fourth!, (value) {
+      return _then(_value.copyWith(fourth: value));
     });
   }
 
   @override
-  $SubjectFromTableCopyWith<$Res>? get thirdEven {
-    if (_value.thirdEven == null) {
+  $SubjectFromTableCopyWith<$Res>? get fifth {
+    if (_value.fifth == null) {
       return null;
     }
 
-    return $SubjectFromTableCopyWith<$Res>(_value.thirdEven!, (value) {
-      return _then(_value.copyWith(thirdEven: value));
+    return $SubjectFromTableCopyWith<$Res>(_value.fifth!, (value) {
+      return _then(_value.copyWith(fifth: value));
     });
   }
 
   @override
-  $SubjectFromTableCopyWith<$Res>? get thirdNotEven {
-    if (_value.thirdNotEven == null) {
+  $SubjectFromTableCopyWith<$Res>? get sixth {
+    if (_value.sixth == null) {
       return null;
     }
 
-    return $SubjectFromTableCopyWith<$Res>(_value.thirdNotEven!, (value) {
-      return _then(_value.copyWith(thirdNotEven: value));
-    });
-  }
-
-  @override
-  $SubjectFromTableCopyWith<$Res>? get fourthEven {
-    if (_value.fourthEven == null) {
-      return null;
-    }
-
-    return $SubjectFromTableCopyWith<$Res>(_value.fourthEven!, (value) {
-      return _then(_value.copyWith(fourthEven: value));
-    });
-  }
-
-  @override
-  $SubjectFromTableCopyWith<$Res>? get fourthNotven {
-    if (_value.fourthNotven == null) {
-      return null;
-    }
-
-    return $SubjectFromTableCopyWith<$Res>(_value.fourthNotven!, (value) {
-      return _then(_value.copyWith(fourthNotven: value));
-    });
-  }
-
-  @override
-  $SubjectFromTableCopyWith<$Res>? get fifthEven {
-    if (_value.fifthEven == null) {
-      return null;
-    }
-
-    return $SubjectFromTableCopyWith<$Res>(_value.fifthEven!, (value) {
-      return _then(_value.copyWith(fifthEven: value));
-    });
-  }
-
-  @override
-  $SubjectFromTableCopyWith<$Res>? get fifthNotEven {
-    if (_value.fifthNotEven == null) {
-      return null;
-    }
-
-    return $SubjectFromTableCopyWith<$Res>(_value.fifthNotEven!, (value) {
-      return _then(_value.copyWith(fifthNotEven: value));
-    });
-  }
-
-  @override
-  $SubjectFromTableCopyWith<$Res>? get sixthEven {
-    if (_value.sixthEven == null) {
-      return null;
-    }
-
-    return $SubjectFromTableCopyWith<$Res>(_value.sixthEven!, (value) {
-      return _then(_value.copyWith(sixthEven: value));
-    });
-  }
-
-  @override
-  $SubjectFromTableCopyWith<$Res>? get sixthNotEven {
-    if (_value.sixthNotEven == null) {
-      return null;
-    }
-
-    return $SubjectFromTableCopyWith<$Res>(_value.sixthNotEven!, (value) {
-      return _then(_value.copyWith(sixthNotEven: value));
+    return $SubjectFromTableCopyWith<$Res>(_value.sixth!, (value) {
+      return _then(_value.copyWith(sixth: value));
     });
   }
 }
@@ -321,43 +195,25 @@ abstract class _$SubjectsOnDayCopyWith<$Res>
       __$SubjectsOnDayCopyWithImpl<$Res>;
   @override
   $Res call(
-      {SubjectFromTable? firstEven,
-      SubjectFromTable? firstNotEven,
-      SubjectFromTable? secondEven,
-      SubjectFromTable? secondNotEven,
-      SubjectFromTable? thirdEven,
-      SubjectFromTable? thirdNotEven,
-      SubjectFromTable? fourthEven,
-      SubjectFromTable? fourthNotven,
-      SubjectFromTable? fifthEven,
-      SubjectFromTable? fifthNotEven,
-      SubjectFromTable? sixthEven,
-      SubjectFromTable? sixthNotEven});
+      {SubjectFromTable? first,
+      SubjectFromTable? second,
+      SubjectFromTable? third,
+      SubjectFromTable? fourth,
+      SubjectFromTable? fifth,
+      SubjectFromTable? sixth});
 
   @override
-  $SubjectFromTableCopyWith<$Res>? get firstEven;
+  $SubjectFromTableCopyWith<$Res>? get first;
   @override
-  $SubjectFromTableCopyWith<$Res>? get firstNotEven;
+  $SubjectFromTableCopyWith<$Res>? get second;
   @override
-  $SubjectFromTableCopyWith<$Res>? get secondEven;
+  $SubjectFromTableCopyWith<$Res>? get third;
   @override
-  $SubjectFromTableCopyWith<$Res>? get secondNotEven;
+  $SubjectFromTableCopyWith<$Res>? get fourth;
   @override
-  $SubjectFromTableCopyWith<$Res>? get thirdEven;
+  $SubjectFromTableCopyWith<$Res>? get fifth;
   @override
-  $SubjectFromTableCopyWith<$Res>? get thirdNotEven;
-  @override
-  $SubjectFromTableCopyWith<$Res>? get fourthEven;
-  @override
-  $SubjectFromTableCopyWith<$Res>? get fourthNotven;
-  @override
-  $SubjectFromTableCopyWith<$Res>? get fifthEven;
-  @override
-  $SubjectFromTableCopyWith<$Res>? get fifthNotEven;
-  @override
-  $SubjectFromTableCopyWith<$Res>? get sixthEven;
-  @override
-  $SubjectFromTableCopyWith<$Res>? get sixthNotEven;
+  $SubjectFromTableCopyWith<$Res>? get sixth;
 }
 
 /// @nodoc
@@ -373,67 +229,37 @@ class __$SubjectsOnDayCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? firstEven = freezed,
-    Object? firstNotEven = freezed,
-    Object? secondEven = freezed,
-    Object? secondNotEven = freezed,
-    Object? thirdEven = freezed,
-    Object? thirdNotEven = freezed,
-    Object? fourthEven = freezed,
-    Object? fourthNotven = freezed,
-    Object? fifthEven = freezed,
-    Object? fifthNotEven = freezed,
-    Object? sixthEven = freezed,
-    Object? sixthNotEven = freezed,
+    Object? first = freezed,
+    Object? second = freezed,
+    Object? third = freezed,
+    Object? fourth = freezed,
+    Object? fifth = freezed,
+    Object? sixth = freezed,
   }) {
     return _then(_SubjectsOnDay(
-      firstEven: firstEven == freezed
-          ? _value.firstEven
-          : firstEven // ignore: cast_nullable_to_non_nullable
+      first: first == freezed
+          ? _value.first
+          : first // ignore: cast_nullable_to_non_nullable
               as SubjectFromTable?,
-      firstNotEven: firstNotEven == freezed
-          ? _value.firstNotEven
-          : firstNotEven // ignore: cast_nullable_to_non_nullable
+      second: second == freezed
+          ? _value.second
+          : second // ignore: cast_nullable_to_non_nullable
               as SubjectFromTable?,
-      secondEven: secondEven == freezed
-          ? _value.secondEven
-          : secondEven // ignore: cast_nullable_to_non_nullable
+      third: third == freezed
+          ? _value.third
+          : third // ignore: cast_nullable_to_non_nullable
               as SubjectFromTable?,
-      secondNotEven: secondNotEven == freezed
-          ? _value.secondNotEven
-          : secondNotEven // ignore: cast_nullable_to_non_nullable
+      fourth: fourth == freezed
+          ? _value.fourth
+          : fourth // ignore: cast_nullable_to_non_nullable
               as SubjectFromTable?,
-      thirdEven: thirdEven == freezed
-          ? _value.thirdEven
-          : thirdEven // ignore: cast_nullable_to_non_nullable
+      fifth: fifth == freezed
+          ? _value.fifth
+          : fifth // ignore: cast_nullable_to_non_nullable
               as SubjectFromTable?,
-      thirdNotEven: thirdNotEven == freezed
-          ? _value.thirdNotEven
-          : thirdNotEven // ignore: cast_nullable_to_non_nullable
-              as SubjectFromTable?,
-      fourthEven: fourthEven == freezed
-          ? _value.fourthEven
-          : fourthEven // ignore: cast_nullable_to_non_nullable
-              as SubjectFromTable?,
-      fourthNotven: fourthNotven == freezed
-          ? _value.fourthNotven
-          : fourthNotven // ignore: cast_nullable_to_non_nullable
-              as SubjectFromTable?,
-      fifthEven: fifthEven == freezed
-          ? _value.fifthEven
-          : fifthEven // ignore: cast_nullable_to_non_nullable
-              as SubjectFromTable?,
-      fifthNotEven: fifthNotEven == freezed
-          ? _value.fifthNotEven
-          : fifthNotEven // ignore: cast_nullable_to_non_nullable
-              as SubjectFromTable?,
-      sixthEven: sixthEven == freezed
-          ? _value.sixthEven
-          : sixthEven // ignore: cast_nullable_to_non_nullable
-              as SubjectFromTable?,
-      sixthNotEven: sixthNotEven == freezed
-          ? _value.sixthNotEven
-          : sixthNotEven // ignore: cast_nullable_to_non_nullable
+      sixth: sixth == freezed
+          ? _value.sixth
+          : sixth // ignore: cast_nullable_to_non_nullable
               as SubjectFromTable?,
     ));
   }
@@ -443,47 +269,29 @@ class __$SubjectsOnDayCopyWithImpl<$Res>
 
 class _$_SubjectsOnDay implements _SubjectsOnDay {
   _$_SubjectsOnDay(
-      {this.firstEven,
-      this.firstNotEven,
-      this.secondEven,
-      this.secondNotEven,
-      this.thirdEven,
-      this.thirdNotEven,
-      this.fourthEven,
-      this.fourthNotven,
-      this.fifthEven,
-      this.fifthNotEven,
-      this.sixthEven,
-      this.sixthNotEven});
+      {this.first,
+      this.second,
+      this.third,
+      this.fourth,
+      this.fifth,
+      this.sixth});
 
   @override
-  final SubjectFromTable? firstEven;
+  final SubjectFromTable? first;
   @override
-  final SubjectFromTable? firstNotEven;
+  final SubjectFromTable? second;
   @override
-  final SubjectFromTable? secondEven;
+  final SubjectFromTable? third;
   @override
-  final SubjectFromTable? secondNotEven;
+  final SubjectFromTable? fourth;
   @override
-  final SubjectFromTable? thirdEven;
+  final SubjectFromTable? fifth;
   @override
-  final SubjectFromTable? thirdNotEven;
-  @override
-  final SubjectFromTable? fourthEven;
-  @override
-  final SubjectFromTable? fourthNotven;
-  @override
-  final SubjectFromTable? fifthEven;
-  @override
-  final SubjectFromTable? fifthNotEven;
-  @override
-  final SubjectFromTable? sixthEven;
-  @override
-  final SubjectFromTable? sixthNotEven;
+  final SubjectFromTable? sixth;
 
   @override
   String toString() {
-    return 'SubjectsOnDay(firstEven: $firstEven, firstNotEven: $firstNotEven, secondEven: $secondEven, secondNotEven: $secondNotEven, thirdEven: $thirdEven, thirdNotEven: $thirdNotEven, fourthEven: $fourthEven, fourthNotven: $fourthNotven, fifthEven: $fifthEven, fifthNotEven: $fifthNotEven, sixthEven: $sixthEven, sixthNotEven: $sixthNotEven)';
+    return 'SubjectsOnDay(first: $first, second: $second, third: $third, fourth: $fourth, fifth: $fifth, sixth: $sixth)';
   }
 
   @override
@@ -491,43 +299,23 @@ class _$_SubjectsOnDay implements _SubjectsOnDay {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _SubjectsOnDay &&
-            const DeepCollectionEquality().equals(other.firstEven, firstEven) &&
-            const DeepCollectionEquality()
-                .equals(other.firstNotEven, firstNotEven) &&
-            const DeepCollectionEquality()
-                .equals(other.secondEven, secondEven) &&
-            const DeepCollectionEquality()
-                .equals(other.secondNotEven, secondNotEven) &&
-            const DeepCollectionEquality().equals(other.thirdEven, thirdEven) &&
-            const DeepCollectionEquality()
-                .equals(other.thirdNotEven, thirdNotEven) &&
-            const DeepCollectionEquality()
-                .equals(other.fourthEven, fourthEven) &&
-            const DeepCollectionEquality()
-                .equals(other.fourthNotven, fourthNotven) &&
-            const DeepCollectionEquality().equals(other.fifthEven, fifthEven) &&
-            const DeepCollectionEquality()
-                .equals(other.fifthNotEven, fifthNotEven) &&
-            const DeepCollectionEquality().equals(other.sixthEven, sixthEven) &&
-            const DeepCollectionEquality()
-                .equals(other.sixthNotEven, sixthNotEven));
+            const DeepCollectionEquality().equals(other.first, first) &&
+            const DeepCollectionEquality().equals(other.second, second) &&
+            const DeepCollectionEquality().equals(other.third, third) &&
+            const DeepCollectionEquality().equals(other.fourth, fourth) &&
+            const DeepCollectionEquality().equals(other.fifth, fifth) &&
+            const DeepCollectionEquality().equals(other.sixth, sixth));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(firstEven),
-      const DeepCollectionEquality().hash(firstNotEven),
-      const DeepCollectionEquality().hash(secondEven),
-      const DeepCollectionEquality().hash(secondNotEven),
-      const DeepCollectionEquality().hash(thirdEven),
-      const DeepCollectionEquality().hash(thirdNotEven),
-      const DeepCollectionEquality().hash(fourthEven),
-      const DeepCollectionEquality().hash(fourthNotven),
-      const DeepCollectionEquality().hash(fifthEven),
-      const DeepCollectionEquality().hash(fifthNotEven),
-      const DeepCollectionEquality().hash(sixthEven),
-      const DeepCollectionEquality().hash(sixthNotEven));
+      const DeepCollectionEquality().hash(first),
+      const DeepCollectionEquality().hash(second),
+      const DeepCollectionEquality().hash(third),
+      const DeepCollectionEquality().hash(fourth),
+      const DeepCollectionEquality().hash(fifth),
+      const DeepCollectionEquality().hash(sixth));
 
   @JsonKey(ignore: true)
   @override
@@ -537,43 +325,25 @@ class _$_SubjectsOnDay implements _SubjectsOnDay {
 
 abstract class _SubjectsOnDay implements SubjectsOnDay {
   factory _SubjectsOnDay(
-      {SubjectFromTable? firstEven,
-      SubjectFromTable? firstNotEven,
-      SubjectFromTable? secondEven,
-      SubjectFromTable? secondNotEven,
-      SubjectFromTable? thirdEven,
-      SubjectFromTable? thirdNotEven,
-      SubjectFromTable? fourthEven,
-      SubjectFromTable? fourthNotven,
-      SubjectFromTable? fifthEven,
-      SubjectFromTable? fifthNotEven,
-      SubjectFromTable? sixthEven,
-      SubjectFromTable? sixthNotEven}) = _$_SubjectsOnDay;
+      {SubjectFromTable? first,
+      SubjectFromTable? second,
+      SubjectFromTable? third,
+      SubjectFromTable? fourth,
+      SubjectFromTable? fifth,
+      SubjectFromTable? sixth}) = _$_SubjectsOnDay;
 
   @override
-  SubjectFromTable? get firstEven;
+  SubjectFromTable? get first;
   @override
-  SubjectFromTable? get firstNotEven;
+  SubjectFromTable? get second;
   @override
-  SubjectFromTable? get secondEven;
+  SubjectFromTable? get third;
   @override
-  SubjectFromTable? get secondNotEven;
+  SubjectFromTable? get fourth;
   @override
-  SubjectFromTable? get thirdEven;
+  SubjectFromTable? get fifth;
   @override
-  SubjectFromTable? get thirdNotEven;
-  @override
-  SubjectFromTable? get fourthEven;
-  @override
-  SubjectFromTable? get fourthNotven;
-  @override
-  SubjectFromTable? get fifthEven;
-  @override
-  SubjectFromTable? get fifthNotEven;
-  @override
-  SubjectFromTable? get sixthEven;
-  @override
-  SubjectFromTable? get sixthNotEven;
+  SubjectFromTable? get sixth;
   @override
   @JsonKey(ignore: true)
   _$SubjectsOnDayCopyWith<_SubjectsOnDay> get copyWith =>

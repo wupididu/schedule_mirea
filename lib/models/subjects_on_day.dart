@@ -6,22 +6,11 @@ part 'subjects_on_day.freezed.dart';
 @freezed
 class SubjectsOnDay with _$SubjectsOnDay {
   factory SubjectsOnDay({
-    SubjectFromTable? firstEven,
-    SubjectFromTable? firstNotEven,
-
-    SubjectFromTable? secondEven,
-    SubjectFromTable? secondNotEven,
-
-    SubjectFromTable? thirdEven,
-    SubjectFromTable? thirdNotEven,
-
-    SubjectFromTable? fourthEven,
-    SubjectFromTable? fourthNotven,
-
-    SubjectFromTable? fifthEven,
-    SubjectFromTable? fifthNotEven,
-
-    SubjectFromTable? sixthEven,
-    SubjectFromTable? sixthNotEven,
+    SubjectFromTable? first,
+    SubjectFromTable? second,
+    SubjectFromTable? third,
+    SubjectFromTable? fourth,
+    SubjectFromTable? fifth,
+    SubjectFromTable? sixth,
   }) = _SubjectsOnDay;
 }

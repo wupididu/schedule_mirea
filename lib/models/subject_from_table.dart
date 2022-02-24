@@ -13,6 +13,8 @@ class SubjectFromTable with _$SubjectFromTable {
 }
 
 enum TypeOfSubject {
+  none,
+  lek,
   prac,
   lab,
 }

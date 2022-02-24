@@ -19,12 +19,12 @@ class _$SubjectsOnWeekTearOff {
   const _$SubjectsOnWeekTearOff();
 
   _SubjectsOnWeek call(
-      {required SubjectsOnDay monday,
-      required SubjectsOnDay thuesday,
-      required SubjectsOnDay wednesday,
-      required SubjectsOnDay thursday,
-      required SubjectsOnDay friday,
-      required SubjectsOnDay saturday}) {
+      {required EvenDay monday,
+      required EvenDay thuesday,
+      required EvenDay wednesday,
+      required EvenDay thursday,
+      required EvenDay friday,
+      required EvenDay saturday}) {
     return _SubjectsOnWeek(
       monday: monday,
       thuesday: thuesday,
@@ -41,12 +41,12 @@ const $SubjectsOnWeek = _$SubjectsOnWeekTearOff();
 
 /// @nodoc
 mixin _$SubjectsOnWeek {
-  SubjectsOnDay get monday => throw _privateConstructorUsedError;
-  SubjectsOnDay get thuesday => throw _privateConstructorUsedError;
-  SubjectsOnDay get wednesday => throw _privateConstructorUsedError;
-  SubjectsOnDay get thursday => throw _privateConstructorUsedError;
-  SubjectsOnDay get friday => throw _privateConstructorUsedError;
-  SubjectsOnDay get saturday => throw _privateConstructorUsedError;
+  EvenDay get monday => throw _privateConstructorUsedError;
+  EvenDay get thuesday => throw _privateConstructorUsedError;
+  EvenDay get wednesday => throw _privateConstructorUsedError;
+  EvenDay get thursday => throw _privateConstructorUsedError;
+  EvenDay get friday => throw _privateConstructorUsedError;
+  EvenDay get saturday => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $SubjectsOnWeekCopyWith<SubjectsOnWeek> get copyWith =>
@@ -59,19 +59,19 @@ abstract class $SubjectsOnWeekCopyWith<$Res> {
           SubjectsOnWeek value, $Res Function(SubjectsOnWeek) then) =
       _$SubjectsOnWeekCopyWithImpl<$Res>;
   $Res call(
-      {SubjectsOnDay monday,
-      SubjectsOnDay thuesday,
-      SubjectsOnDay wednesday,
-      SubjectsOnDay thursday,
-      SubjectsOnDay friday,
-      SubjectsOnDay saturday});
+      {EvenDay monday,
+      EvenDay thuesday,
+      EvenDay wednesday,
+      EvenDay thursday,
+      EvenDay friday,
+      EvenDay saturday});
 
-  $SubjectsOnDayCopyWith<$Res> get monday;
-  $SubjectsOnDayCopyWith<$Res> get thuesday;
-  $SubjectsOnDayCopyWith<$Res> get wednesday;
-  $SubjectsOnDayCopyWith<$Res> get thursday;
-  $SubjectsOnDayCopyWith<$Res> get friday;
-  $SubjectsOnDayCopyWith<$Res> get saturday;
+  $EvenDayCopyWith<$Res> get monday;
+  $EvenDayCopyWith<$Res> get thuesday;
+  $EvenDayCopyWith<$Res> get wednesday;
+  $EvenDayCopyWith<$Res> get thursday;
+  $EvenDayCopyWith<$Res> get friday;
+  $EvenDayCopyWith<$Res> get saturday;
 }
 
 /// @nodoc
@@ -96,68 +96,68 @@ class _$SubjectsOnWeekCopyWithImpl<$Res>
       monday: monday == freezed
           ? _value.monday
           : monday // ignore: cast_nullable_to_non_nullable
-              as SubjectsOnDay,
+              as EvenDay,
       thuesday: thuesday == freezed
           ? _value.thuesday
           : thuesday // ignore: cast_nullable_to_non_nullable
-              as SubjectsOnDay,
+              as EvenDay,
       wednesday: wednesday == freezed
           ? _value.wednesday
           : wednesday // ignore: cast_nullable_to_non_nullable
-              as SubjectsOnDay,
+              as EvenDay,
       thursday: thursday == freezed
           ? _value.thursday
           : thursday // ignore: cast_nullable_to_non_nullable
-              as SubjectsOnDay,
+              as EvenDay,
       friday: friday == freezed
           ? _value.friday
           : friday // ignore: cast_nullable_to_non_nullable
-              as SubjectsOnDay,
+              as EvenDay,
       saturday: saturday == freezed
           ? _value.saturday
           : saturday // ignore: cast_nullable_to_non_nullable
-              as SubjectsOnDay,
+              as EvenDay,
     ));
   }
 
   @override
-  $SubjectsOnDayCopyWith<$Res> get monday {
-    return $SubjectsOnDayCopyWith<$Res>(_value.monday, (value) {
+  $EvenDayCopyWith<$Res> get monday {
+    return $EvenDayCopyWith<$Res>(_value.monday, (value) {
       return _then(_value.copyWith(monday: value));
     });
   }
 
   @override
-  $SubjectsOnDayCopyWith<$Res> get thuesday {
-    return $SubjectsOnDayCopyWith<$Res>(_value.thuesday, (value) {
+  $EvenDayCopyWith<$Res> get thuesday {
+    return $EvenDayCopyWith<$Res>(_value.thuesday, (value) {
       return _then(_value.copyWith(thuesday: value));
     });
   }
 
   @override
-  $SubjectsOnDayCopyWith<$Res> get wednesday {
-    return $SubjectsOnDayCopyWith<$Res>(_value.wednesday, (value) {
+  $EvenDayCopyWith<$Res> get wednesday {
+    return $EvenDayCopyWith<$Res>(_value.wednesday, (value) {
       return _then(_value.copyWith(wednesday: value));
     });
   }
 
   @override
-  $SubjectsOnDayCopyWith<$Res> get thursday {
-    return $SubjectsOnDayCopyWith<$Res>(_value.thursday, (value) {
+  $EvenDayCopyWith<$Res> get thursday {
+    return $EvenDayCopyWith<$Res>(_value.thursday, (value) {
       return _then(_value.copyWith(thursday: value));
     });
   }
 
   @override
-  $SubjectsOnDayCopyWith<$Res> get friday {
-    return $SubjectsOnDayCopyWith<$Res>(_value.friday, (value) {
+  $EvenDayCopyWith<$Res> get friday {
+    return $EvenDayCopyWith<$Res>(_value.friday, (value) {
       return _then(_value.copyWith(friday: value));
     });
   }
 
   @override
-  $SubjectsOnDayCopyWith<$Res> get saturday {
-    return $SubjectsOnDayCopyWith<$Res>(_value.saturday, (value) {
+  $EvenDayCopyWith<$Res> get saturday {
+    return $EvenDayCopyWith<$Res>(_value.saturday, (value) {
       return _then(_value.copyWith(saturday: value));
     });
   }
@@ -171,25 +171,25 @@ abstract class _$SubjectsOnWeekCopyWith<$Res>
       __$SubjectsOnWeekCopyWithImpl<$Res>;
   @override
   $Res call(
-      {SubjectsOnDay monday,
-      SubjectsOnDay thuesday,
-      SubjectsOnDay wednesday,
-      SubjectsOnDay thursday,
-      SubjectsOnDay friday,
-      SubjectsOnDay saturday});
+      {EvenDay monday,
+      EvenDay thuesday,
+      EvenDay wednesday,
+      EvenDay thursday,
+      EvenDay friday,
+      EvenDay saturday});
 
   @override
-  $SubjectsOnDayCopyWith<$Res> get monday;
+  $EvenDayCopyWith<$Res> get monday;
   @override
-  $SubjectsOnDayCopyWith<$Res> get thuesday;
+  $EvenDayCopyWith<$Res> get thuesday;
   @override
-  $SubjectsOnDayCopyWith<$Res> get wednesday;
+  $EvenDayCopyWith<$Res> get wednesday;
   @override
-  $SubjectsOnDayCopyWith<$Res> get thursday;
+  $EvenDayCopyWith<$Res> get thursday;
   @override
-  $SubjectsOnDayCopyWith<$Res> get friday;
+  $EvenDayCopyWith<$Res> get friday;
   @override
-  $SubjectsOnDayCopyWith<$Res> get saturday;
+  $EvenDayCopyWith<$Res> get saturday;
 }
 
 /// @nodoc
@@ -216,27 +216,27 @@ class __$SubjectsOnWeekCopyWithImpl<$Res>
       monday: monday == freezed
           ? _value.monday
           : monday // ignore: cast_nullable_to_non_nullable
-              as SubjectsOnDay,
+              as EvenDay,
       thuesday: thuesday == freezed
           ? _value.thuesday
           : thuesday // ignore: cast_nullable_to_non_nullable
-              as SubjectsOnDay,
+              as EvenDay,
       wednesday: wednesday == freezed
           ? _value.wednesday
           : wednesday // ignore: cast_nullable_to_non_nullable
-              as SubjectsOnDay,
+              as EvenDay,
       thursday: thursday == freezed
           ? _value.thursday
           : thursday // ignore: cast_nullable_to_non_nullable
-              as SubjectsOnDay,
+              as EvenDay,
       friday: friday == freezed
           ? _value.friday
           : friday // ignore: cast_nullable_to_non_nullable
-              as SubjectsOnDay,
+              as EvenDay,
       saturday: saturday == freezed
           ? _value.saturday
           : saturday // ignore: cast_nullable_to_non_nullable
-              as SubjectsOnDay,
+              as EvenDay,
     ));
   }
 }
@@ -253,17 +253,17 @@ class _$_SubjectsOnWeek implements _SubjectsOnWeek {
       required this.saturday});
 
   @override
-  final SubjectsOnDay monday;
+  final EvenDay monday;
   @override
-  final SubjectsOnDay thuesday;
+  final EvenDay thuesday;
   @override
-  final SubjectsOnDay wednesday;
+  final EvenDay wednesday;
   @override
-  final SubjectsOnDay thursday;
+  final EvenDay thursday;
   @override
-  final SubjectsOnDay friday;
+  final EvenDay friday;
   @override
-  final SubjectsOnDay saturday;
+  final EvenDay saturday;
 
   @override
   String toString() {
@@ -301,25 +301,25 @@ class _$_SubjectsOnWeek implements _SubjectsOnWeek {
 
 abstract class _SubjectsOnWeek implements SubjectsOnWeek {
   factory _SubjectsOnWeek(
-      {required SubjectsOnDay monday,
-      required SubjectsOnDay thuesday,
-      required SubjectsOnDay wednesday,
-      required SubjectsOnDay thursday,
-      required SubjectsOnDay friday,
-      required SubjectsOnDay saturday}) = _$_SubjectsOnWeek;
+      {required EvenDay monday,
+      required EvenDay thuesday,
+      required EvenDay wednesday,
+      required EvenDay thursday,
+      required EvenDay friday,
+      required EvenDay saturday}) = _$_SubjectsOnWeek;
 
   @override
-  SubjectsOnDay get monday;
+  EvenDay get monday;
   @override
-  SubjectsOnDay get thuesday;
+  EvenDay get thuesday;
   @override
-  SubjectsOnDay get wednesday;
+  EvenDay get wednesday;
   @override
-  SubjectsOnDay get thursday;
+  EvenDay get thursday;
   @override
-  SubjectsOnDay get friday;
+  EvenDay get friday;
   @override
-  SubjectsOnDay get saturday;
+  EvenDay get saturday;
   @override
   @JsonKey(ignore: true)
   _$SubjectsOnWeekCopyWith<_SubjectsOnWeek> get copyWith =>
