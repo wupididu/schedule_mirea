@@ -29,6 +29,19 @@ class SheduleConverter {
     );
   }
 
+  List<SubjectFromTable> getAllSubjects(String group) {
+    var list = <SubjectFromTable>[];
+    final colIndex = _getCol(group);
+    for (int i = 3; i < 75; i++) {
+      final subject = _getSubject(colIndex, i);
+      if (subject != null && !list.contains(subject)) {
+        list.add(subject);
+      }
+    }
+
+    return list;
+  }
+
   EvenDay _getSubjectsOnDay(int colIndex, int rowIndex) {
     return EvenDay(
         even: SubjectsOnDay(
@@ -88,9 +101,4 @@ class SheduleConverter {
 
     return col;
   }
-
-  // List<SubjectFromTable> getAllSubjects {
-
-  // }
-
 }

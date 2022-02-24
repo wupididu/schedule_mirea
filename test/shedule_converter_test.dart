@@ -15,5 +15,13 @@ void main() {
       final subjects = converter.getSubjectsOnWeek('ИВБО-13-21'); 
       print(subjects);
     });
+
+    test('get all subjects', (){
+      const file = 'assets/ИИТ_1 курс_21-22_весна.xlsx';
+      final converter = SheduleConverter();
+      converter.setFile(file);
+      final subjects = converter.getAllSubjects('ИВБО-13-21');
+      print(subjects);
+    });
   });  
 }
