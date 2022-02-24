@@ -23,6 +23,6 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   
-  assets:
+  # assets:
     # это временное решение. Этого асета здесь быть не должно
-    - assets/ИИТ_1 курс_21_22_весна.xlsx
+    # - 'assets/ИИТ_1 курс_21_22_весна.xlsx'
