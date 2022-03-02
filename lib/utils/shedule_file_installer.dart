@@ -4,26 +4,25 @@ import 'package:http/http.dart' show get;
 import 'package:path_provider/path_provider.dart';
 
 class SheduleFileInstaller {
-  String? _sheduleFilePath;
+  Future<String> get sheduleFilePath async {
+    var documentDirectory = await getApplicationDocumentsDirectory();
+    return documentDirectory.path + "/shedule.xlsx";
+  }
 
-  Future<String?> downloadFile(String uri) async {
+  Future<void> downloadFile(String uri) async {
     var url = Uri.tryParse(uri);
     if (url == null) {
-      return null;
+      return;
     }
     var response = await get(url);
-    var documentDirectory = await getApplicationDocumentsDirectory();
-    var _sheduleFilePath = documentDirectory.path + "/shedule.xlsx";
-    final file = File(_sheduleFilePath);
+    final path = await sheduleFilePath;
+    final file = File(path);
     file.writeAsBytesSync(response.bodyBytes);
-    return _sheduleFilePath;
   }
 
   Future<void> deleteFile() async {
-    if (_sheduleFilePath == null) {
-      return;
-    }
-    final file = File(_sheduleFilePath!);
+    final path = await sheduleFilePath;
+    final file = File(path);
     await file.delete();
   }
 }
