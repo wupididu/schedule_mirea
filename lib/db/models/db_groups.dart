@@ -4,9 +4,6 @@ class DBGroups with DBItem{
   @override
   String getTableName() => tableName;
 
-  @override
-  String getColumnId() => columnId;
-
   static const tableName = 'groups';
 
   static const columnId = 'id';
