@@ -8,7 +8,7 @@ class DBScheduleDay with DBItem {
   @override
   String getTableName() => tableName;
 
-  static const tableName = 'shedule_day';
+  static const tableName = 'schedule_day';
 
   static const columnId = 'id';
   static const columnisEven = 'is_even';

@@ -6,10 +6,10 @@ class DBSubjectSchedule with DBItem {
   @override
   String getTableName() => tableName;
 
-  static const tableName = 'subject_shedule';
+  static const tableName = 'subject_schedule';
 
   static const columnId = 'id';
-  static const columnScheduleDayId = 'shedule_day_id';
+  static const columnScheduleDayId = 'schedule_day_id';
   static const columnSubjectId = 'subject_id';
 
   static const createTableQuery = ''' 
