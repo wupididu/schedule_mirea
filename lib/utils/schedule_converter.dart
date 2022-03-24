@@ -6,7 +6,7 @@ import 'package:schedule_mirea/models/subjects_on_day.dart';
 
 import '../models/subjects_on_week.dart';
 
-class SheduleConverter {
+class ScheduleConverter {
   late Excel _excel;
   late Sheet _sheet;
 
