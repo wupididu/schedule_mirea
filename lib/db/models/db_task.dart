@@ -24,7 +24,7 @@ class DBTask with DBItem {
       $columnDescription text not null,
       $columnSubjectId int not null,
       foreign key ($columnSubjectId) references ${DBSubject.tableName} (${DBSubject.columnId})
-    );
+    )
   ''';
 
   @override
@@ -63,6 +63,8 @@ class DBTask with DBItem {
         columnStateOfTask: describeEnum(stateOfTask),
         columnSubjectId: subjectId,
       };
+
+  static bool isMatch<T extends DBItem>() => T.toString() == 'DBTask';
 }
 
 enum StateOfTask {

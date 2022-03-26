@@ -1,5 +1,7 @@
 import 'dart:io';
 import 'package:excel/excel.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod/riverpod.dart';
 import 'package:schedule_mirea/models/even_day.dart';
 import 'package:schedule_mirea/models/subject_from_table.dart';
 import 'package:schedule_mirea/models/subjects_on_day.dart';
@@ -21,7 +23,7 @@ class ScheduleConverter {
 
     return SubjectsOnWeek(
       monday: _getSubjectsOnDay(colIndex, 3),
-      thuesday: _getSubjectsOnDay(colIndex, 15),
+      tuesday: _getSubjectsOnDay(colIndex, 15),
       wednesday: _getSubjectsOnDay(colIndex, 27),
       thursday: _getSubjectsOnDay(colIndex, 39),
       friday: _getSubjectsOnDay(colIndex, 51),
@@ -102,3 +104,5 @@ class ScheduleConverter {
     return col;
   }
 }
+
+final scheduleConverterProvider = Provider((ref) => ScheduleConverter());

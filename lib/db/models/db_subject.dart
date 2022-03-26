@@ -21,7 +21,7 @@ class DBSubject with DBItem {
       $columnRoom text not null,
       $columnType text not null,
       $columnTeacher text not null
-    );
+    )
   ''';
 
   @override
@@ -39,7 +39,7 @@ class DBSubject with DBItem {
     required this.teacher,
   });
 
-  factory DBSubject.fromJson(Map<String, dynamic> map) => DBSubject(
+  factory DBSubject.fromMap(Map<String, dynamic> map) => DBSubject(
         id: map[columnId],
         name: map[columnName],
         room: map[columnRoom],
@@ -55,4 +55,6 @@ class DBSubject with DBItem {
         columnType: type,
         columnTeacher: teacher,
       };
+
+  static bool isMatch<T extends DBItem>() => T.toString() == 'DBSubject';
 }

@@ -13,7 +13,7 @@ class DBGroups with DBItem{
   create table $tableName (
     $columnId integer primary key autoincrement,
     $columnGroupCode text not null
-  );
+  )
 ''';
 
   @override
@@ -35,4 +35,6 @@ class DBGroups with DBItem{
         id: map[columnId] as int?,
         groupCode: map[columnGroupCode] as String,
       );
+
+  static bool isMatch<T extends DBItem>() => T.toString() == 'DBGroups';
 }
