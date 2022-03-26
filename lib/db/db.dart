@@ -27,12 +27,10 @@ class DB {
     }
     _db = await openDatabase(
       _databaseName,
-      version: 1,
+      version: 3,
       onCreate: _onCreate,
     );
-    print('init');
     _complete.complete(true);
-    print(_complete.isCompleted);
   }
 
   Future<void> dispose() async {
@@ -40,15 +38,15 @@ class DB {
   }
 
   void _onCreate(Database db, int version) async {
+    await db.execute(DBSubject.createTableQuery);
     await db.execute(DBGroups.createTableQuery);
     await db.execute(DBScheduleDay.createTableQuery);
     await db.execute(DBSubjectSchedule.createTableQuery);
-    await db.execute(DBSubject.createTableQuery);
     await db.execute(DBTask.createTableQuery);
   }
 
   Future<T> insert<T extends DBItem>(T item) async {
-    item.id = await _db.insert(item.getTableName(), item.toMap());
+    item.setId(await _db.insert(item.getTableName(), item.toMap()));
     return item;
   }
 
@@ -73,7 +71,6 @@ class DB {
     final fromMap = _getFromMapMethod<T>();
 
     final List<Map<String, dynamic>> maps = await _db.query(tableName);
-    print(maps);
     final List<T?> result = maps.map<T?>((map) => fromMap(map)).toList();
     return result;
   }
@@ -94,17 +91,23 @@ class DB {
     return _db.delete(tableName);
   }
 
+  Future<void> deleteBy<T extends DBItem>(
+      String where, List<dynamic> whereArgs) async {
+    final tableName = _getTableName<T>();
+
+    await _db.delete(_getTableName(), where: where, whereArgs: whereArgs);
+  }
+
   Future<int> update<T extends DBItem>(T item) {
     return _db.update(
       item.getTableName(),
       item.toMap(),
       where: 'id = ?',
-      whereArgs: [item.id],
+      whereArgs: [item.getId()],
     );
   }
 
   String _getTableName<T extends DBItem>() {
-    print(T.toString());
     if (DBGroups.isMatch<T>()) {
       return DBGroups.tableName;
     }

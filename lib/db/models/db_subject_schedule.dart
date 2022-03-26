@@ -15,16 +15,15 @@ class DBSubjectSchedule with DBItem {
 
   static const createTableQuery = ''' 
     create table $tableName (
-      $columnId int primary key,
+      $columnId integer primary key autoincrement,
       $columnSubjectNum int not null,
       $columnScheduleDayId int not null,
       $columnSubjectId int not null,
-      foreign key ($columnScheduleDayId) references ${DBScheduleDay.tableName} (${DBScheduleDay.columnId}),
-      foreign key ($columnSubjectId) references ${DBSubject.tableName} (${DBSubject.columnId})
+      constraint fk_${DBScheduleDay.tableName} foreign key ($columnScheduleDayId) references ${DBScheduleDay.tableName} (${DBScheduleDay.columnId}) on delete cascade,
+      constraint fk_${DBSubject.tableName} foreign key ($columnSubjectId) references ${DBSubject.tableName} (${DBSubject.columnId}) on delete cascade
     )
   ''';
 
-  @override
   int? id;
   int subjectNum;
   int scheduleDayId;
@@ -49,8 +48,17 @@ class DBSubjectSchedule with DBItem {
   Map<String, dynamic> toMap() => {
         if (id != null) columnId: id,
         columnScheduleDayId: scheduleDayId,
+        columnSubjectNum: subjectNum,
         columnSubjectId: subjectId,
       };
 
   static bool isMatch<T extends DBItem>() => T.toString() == 'DBSubjectSchedule';
+
+  @override
+  int? getId() => id;
+
+  @override
+  void setId(int id) {
+    this.id = id;
+  }
 }

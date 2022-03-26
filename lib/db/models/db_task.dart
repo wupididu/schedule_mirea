@@ -18,16 +18,15 @@ class DBTask with DBItem {
 
   static const createTableQuery = ''' 
     create table $tableName (
-      $columnId int primary key,
+      $columnId integer primary key autoincrement, 
       $columnName text not null,
       $columnDeadline datetime not null,
       $columnDescription text not null,
       $columnSubjectId int not null,
-      foreign key ($columnSubjectId) references ${DBSubject.tableName} (${DBSubject.columnId})
+      constraint fk_${DBSubject.tableName} foreign key ($columnSubjectId) references ${DBSubject.tableName} (${DBSubject.columnId}) on delete cascade
     )
   ''';
 
-  @override
   int? id;
   String name;
   DateTime deadline;
@@ -65,6 +64,14 @@ class DBTask with DBItem {
       };
 
   static bool isMatch<T extends DBItem>() => T.toString() == 'DBTask';
+
+  @override
+  int? getId() => id;
+
+  @override
+  void setId(int id) {
+    this.id = id;
+  }
 }
 
 enum StateOfTask {

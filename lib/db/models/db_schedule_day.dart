@@ -24,7 +24,6 @@ class DBScheduleDay with DBItem {
   )
 ''';
 
-  @override
   int? id;
   bool isEven;
   DayOfWeek dayOfWeek;
@@ -54,6 +53,14 @@ class DBScheduleDay with DBItem {
       };
 
   static bool isMatch<T extends DBItem>() => T.toString() == 'DBScheduleDay';
+
+  @override
+  int? getId() => id;
+
+  @override
+  void setId(int id) {
+    this.id = id;
+  }
 }
 
 enum DayOfWeek {

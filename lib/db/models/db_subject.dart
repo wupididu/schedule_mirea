@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:schedule_mirea/db/models/db_item.dart';
 import 'package:schedule_mirea/models/subject_from_table.dart';
@@ -16,7 +17,7 @@ class DBSubject with DBItem {
 
   static const createTableQuery = ''' 
     create table $tableName (
-      $columnId int primary key,
+      $columnId integer primary key autoincrement,
       $columnName text not null,
       $columnRoom text not null,
       $columnType text not null,
@@ -24,7 +25,6 @@ class DBSubject with DBItem {
     )
   ''';
 
-  @override
   int? id;
   String name;
   String room;
@@ -43,7 +43,10 @@ class DBSubject with DBItem {
         id: map[columnId],
         name: map[columnName],
         room: map[columnRoom],
-        type: map[columnType],
+        type: TypeOfSubject.values.firstWhere(
+          (element) => describeEnum(element) == map[columnType],
+          orElse: () => TypeOfSubject.none,
+        ),
         teacher: map[columnTeacher],
       );
 
@@ -52,9 +55,17 @@ class DBSubject with DBItem {
         if (id != null) columnId: id,
         columnName: name,
         columnRoom: room,
-        columnType: type,
+        columnType: describeEnum(type),
         columnTeacher: teacher,
       };
 
   static bool isMatch<T extends DBItem>() => T.toString() == 'DBSubject';
+
+  @override
+  int? getId() => id;
+
+  @override
+  void setId(int id) {
+    this.id = id;
+  }
 }

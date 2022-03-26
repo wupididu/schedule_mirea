@@ -16,7 +16,7 @@ class DBGroups with DBItem{
   )
 ''';
 
-  @override
+
   int? id;
   String groupCode;
 
@@ -37,4 +37,12 @@ class DBGroups with DBItem{
       );
 
   static bool isMatch<T extends DBItem>() => T.toString() == 'DBGroups';
+
+  @override
+  int? getId() => id;
+
+  @override
+  void setId(int id) {
+    this.id = id;
+  }
 }

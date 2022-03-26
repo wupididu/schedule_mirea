@@ -1,10 +1,11 @@
 import 'dart:io';
 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' show get;
 import 'package:path_provider/path_provider.dart';
 
-class SheduleFileInstaller {
-  Future<String> get sheduleFilePath async {
+class ScheduleFileInstaller {
+  Future<String> get scheduleFilePath async {
     var documentDirectory = await getApplicationDocumentsDirectory();
     return documentDirectory.path + "/shedule.xlsx";
   }
@@ -15,14 +16,16 @@ class SheduleFileInstaller {
       return;
     }
     var response = await get(url);
-    final path = await sheduleFilePath;
+    final path = await scheduleFilePath;
     final file = File(path);
     file.writeAsBytesSync(response.bodyBytes);
   }
 
   Future<void> deleteFile() async {
-    final path = await sheduleFilePath;
+    final path = await scheduleFilePath;
     final file = File(path);
     await file.delete();
   }
 }
+
+final scheduleFileInstallerProvider = Provider((ref)=>ScheduleFileInstaller());

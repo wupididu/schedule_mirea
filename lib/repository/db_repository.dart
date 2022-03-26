@@ -3,12 +3,14 @@ import 'package:riverpod/riverpod.dart';
 import 'package:schedule_mirea/db/db.dart';
 import 'package:schedule_mirea/db/models/db_schedule_day.dart';
 import 'package:schedule_mirea/db/models/db_subject_schedule.dart';
+import 'package:schedule_mirea/models/even_day.dart';
 import 'package:schedule_mirea/models/subject_from_table.dart';
 import 'package:schedule_mirea/models/subjects_on_day.dart';
 import 'package:schedule_mirea/utils/schedule_converter.dart';
 
 import '../db/models/db_groups.dart';
 import '../db/models/db_subject.dart';
+import '../models/subjects_on_week.dart';
 
 class DBRepository {
   final DB _db;
@@ -20,12 +22,15 @@ class DBRepository {
 
     final subjectsOnWeek = _scheduleConverter.getSubjectsOnWeek(groupCode);
 
+    final groups = await _db.getAll<DBGroups>();
+    if(groups.firstWhereOrNull((element) => element?.groupCode == groupCode) != null){
+      return;
+    }
+
     final groupId = await _addGroup(groupCode);
     subjectsOnWeek.monday.even;
 
     final listOfSubjects = await _addAllSubjects(groupCode);
-
-
 
     final mondayEvenId = await _addWeekDay(groupId, DayOfWeek.monday, true);
     await _addSubjectSchedule(
@@ -79,6 +84,134 @@ class DBRepository {
         await _addWeekDay(groupId, DayOfWeek.saturday, false);
     await _addSubjectSchedule(
         saturdayNotEvenId, listOfSubjects, subjectsOnWeek.saturday.notEven);
+  }
+
+  Future<SubjectsOnWeek?> getSubjectsOnWeek(String groupCode) async {
+    await _db.initialized;
+
+    final groups = await _db.getAll<DBGroups>();
+
+    final groupId = groups
+        .firstWhereOrNull((element) => element?.groupCode == groupCode)
+        ?.id;
+
+    if (groupId == null) {
+      return null;
+    }
+
+    final scheduleDays = (await _db.getAll<DBScheduleDay>())
+        .where((element) => element?.groupId == groupId).toList();
+    final subjects = await _db.getAll<DBSubject>();
+    final subjectSchedules = await _db.getAll<DBSubjectSchedule>();
+
+    final monday = EvenDay(
+        even: _getSubjectsOnDay(
+            true, DayOfWeek.monday, scheduleDays, subjects, subjectSchedules),
+        notEven: _getSubjectsOnDay(
+            false, DayOfWeek.monday, scheduleDays, subjects, subjectSchedules));
+
+    return SubjectsOnWeek(
+      monday: _getEvenDay(
+          DayOfWeek.monday, scheduleDays, subjects, subjectSchedules),
+      tuesday: _getEvenDay(
+          DayOfWeek.tuesday, scheduleDays, subjects, subjectSchedules),
+      thursday: _getEvenDay(
+          DayOfWeek.thursday, scheduleDays, subjects, subjectSchedules),
+      wednesday: _getEvenDay(
+          DayOfWeek.wednesday, scheduleDays, subjects, subjectSchedules),
+      friday: _getEvenDay(
+          DayOfWeek.friday, scheduleDays, subjects, subjectSchedules),
+      saturday: _getEvenDay(
+          DayOfWeek.saturday, scheduleDays, subjects, subjectSchedules),
+    );
+  }
+
+  Future<void> deleteAllByGroupeCode(String groupCode) async {
+    await _db.initialized;
+    final groupId = (await _db.getAll<DBGroups>()).firstWhereOrNull((element) => element?.groupCode == groupCode);
+
+    if (groupId == null) {
+      return;
+    }
+
+
+
+  }
+
+
+  EvenDay _getEvenDay(
+    DayOfWeek dayOfWeek,
+    List<DBScheduleDay?> scheduleDays,
+    List<DBSubject?> subjects,
+    List<DBSubjectSchedule?> subjectSchedules,
+  ) =>
+      EvenDay(
+          even: _getSubjectsOnDay(
+              true, dayOfWeek, scheduleDays, subjects, subjectSchedules),
+          notEven: _getSubjectsOnDay(
+              false, dayOfWeek, scheduleDays, subjects, subjectSchedules));
+
+  SubjectsOnDay _getSubjectsOnDay(
+    bool isEven,
+    DayOfWeek dayOfWeek,
+    List<DBScheduleDay?> scheduleDays,
+    List<DBSubject?> subjects,
+    List<DBSubjectSchedule?> subjectSchedules,
+  ) =>
+      SubjectsOnDay(
+        first: _getSubject(
+            isEven, dayOfWeek, 1, scheduleDays, subjects, subjectSchedules),
+        second: _getSubject(
+            isEven, dayOfWeek, 2, scheduleDays, subjects, subjectSchedules),
+        third: _getSubject(
+            isEven, dayOfWeek, 3, scheduleDays, subjects, subjectSchedules),
+        fourth: _getSubject(
+            isEven, dayOfWeek, 4, scheduleDays, subjects, subjectSchedules),
+        fifth: _getSubject(
+            isEven, dayOfWeek, 5, scheduleDays, subjects, subjectSchedules),
+        sixth: _getSubject(
+            isEven, dayOfWeek, 6, scheduleDays, subjects, subjectSchedules),
+      );
+
+  SubjectFromTable? _getSubject(
+    bool isEven,
+    DayOfWeek dayOfWeek,
+    int subjectNum,
+    List<DBScheduleDay?> scheduleDays,
+    List<DBSubject?> subjects,
+    List<DBSubjectSchedule?> subjectSchedules,
+  ) {
+    final scheduleDayId = scheduleDays
+        .firstWhereOrNull((element) =>
+            element?.dayOfWeek == dayOfWeek && element?.isEven == isEven)
+        ?.id;
+
+    if (scheduleDayId == null) {
+      throw Exception();
+    }
+
+    final subjectId = subjectSchedules
+        .firstWhereOrNull((element) =>
+            element?.scheduleDayId == scheduleDayId &&
+            element?.subjectNum == subjectNum)
+        ?.subjectId;
+
+    if (subjectId == null) {
+      return null;
+    }
+
+    final subject =
+        subjects.firstWhereOrNull((element) => element?.id == subjectId);
+
+    if (subject == null) {
+      throw Exception();
+    }
+
+    return SubjectFromTable(
+        name: subject.name,
+        room: subject.room,
+        teacher: subject.teacher,
+        typeOfSubject: subject.type);
   }
 
   Future<void> _addSubjectSchedule(

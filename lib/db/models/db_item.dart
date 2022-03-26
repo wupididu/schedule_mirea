@@ -1,7 +1,9 @@
 abstract class DBItem {
-  int? id;
-  
+  void setId(int id);
+
+  int? getId();
+
   String getTableName();
 
-  Map<String, dynamic> toMap();  
+  Map<String, dynamic> toMap();
 }
