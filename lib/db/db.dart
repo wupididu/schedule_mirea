@@ -59,11 +59,11 @@ class DB {
     return null;
   }
 
-  Future<int> delete<T extends DBItem>(T item) {
+  Future<int> delete<T extends DBItem>(String tableName ,int id) {
     return _db.delete(
-      item.getTableName(),
+      tableName,
       where: 'id = ?',
-      whereArgs: [item.id],
+      whereArgs: [id],
     );
   }
 
