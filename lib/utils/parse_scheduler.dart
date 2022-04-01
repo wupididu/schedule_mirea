@@ -17,9 +17,7 @@ class ParseScheduler {
   final _forbiddenWords = <String>{
     'стромынка',
     'экз',
-    'маги',
     'маг',
-    'магистры',
     'расписание',
     'колледж'
   };
@@ -74,7 +72,6 @@ class ParseScheduler {
         String link = href.toString();
 
         String nameLink = link.replaceAll(' ', '_').split('/').last;
-        //print(_receivedCode(nameLink));
 
         if (_enteredCodeGroups() == _receivedCodeForScheduler(nameLink)) {
           return link;
