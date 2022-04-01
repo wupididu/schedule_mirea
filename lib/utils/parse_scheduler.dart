@@ -4,7 +4,6 @@ import 'package:html/parser.dart' as html;
 
 class ParseScheduler {
   late String _group;
-  final int twoPositions = 2;
   final Map<String, String> _universGroups = {
     'ИПТИП': 'Э',
     'ИТУ': 'У',
@@ -26,68 +25,61 @@ class ParseScheduler {
     return _group;
   }
 
-  Future<String?> getLink() async {
-    const int firstPosition = 0;
+  String _enteredCode() {
     int groupLenght = _group.length;
 
-    String identification = _group[firstPosition] +
-        _group.substring(groupLenght - twoPositions, groupLenght);
-    var links = await _fillMap();
-
-    if (links.containsKey(identification)) {
-      //print(links[identification]);
-      return links[identification];
-    }
-    return null;
+    return (_group[0] + _group.substring(groupLenght - 2, groupLenght));
   }
 
-  Future<Map<String, String>> _fillMap() async {
-    var links = <String, String>{};
-    final response =
-        await http.Client().get(Uri.parse("https://www.mirea.ru/schedule/"));
-
-    Document document = html.parse(response.body);
-
-    final anchors = document.querySelectorAll('a');
+  String _receivedCode(String code) {
+    const String marker = "экз";
     final nowYear = DateTime.now().year;
 
-    const int one = 1;
-    const int first = 0;
+    if (code.split('_')[1].length > 1) {
+      code = code.replaceAll('_Стромынка', '');
+    } else if (code.split('_')[0] != marker) {
+      //This is temporary crutch
+      String university = code.split('_')[0];
+
+      int yearAdmission = nowYear - int.parse(code.split('_')[1]);
+      String year = yearAdmission.toString();
+      int yearSize = year.length;
+
+      return (_universGroups[university]! +
+          year.substring(yearSize - 2, yearSize));
+    }
+
+    return marker;
+  }
+
+  Future<String?> getLink() async {
+    final response =
+        await http.Client().get(Uri.parse("https://www.mirea.ru/schedule/"));
+    Document document = html.parse(response.body);
+    final anchors = document.querySelectorAll('a');
 
     int i = 1; // counter
 
     for (var anchor in anchors) {
       if (anchor.attributes['class'] == 'uk-link-toggle') {
-        if (i == 36) {
+        if (i == 44) {
           //limitation for  bechelor's tables
           break;
         }
 
         var href = anchor.attributes['href'];
-        String link = href.toString().replaceAll(' ', '_');
-        String linkBuff = link;
-        String twoDashPart = link.split('_')[one];
+        String link = href.toString();
 
-        String university = (link.split('/')[7]).split('_')[first];
+        String nameLink = link.replaceAll(' ', '_').split('/').last;
+        //print(_receivedCode(nameLink));
 
-        if (twoDashPart.length > one) {
-          linkBuff = link.replaceAll('_Стромынка', '');
-          twoDashPart = linkBuff.split('_')[one];
+        if (_enteredCode() == _receivedCode(nameLink)) {
+          return link;
         }
+
         i++;
-
-        int yearAdmission = nowYear - int.parse(twoDashPart);
-        String year = yearAdmission.toString();
-        int yearSize = year.length;
-        //print(_universGroups[university]! + year.substring(yearSize - 2, yearSize));
-        //print(link);
-
-        links.putIfAbsent(
-            _universGroups[university]! +
-                year.substring(yearSize - twoPositions, yearSize),
-            () => link);
       }
     }
-    return links;
+    return null;
   }
 }
