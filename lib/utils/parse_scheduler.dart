@@ -35,7 +35,6 @@ class ParseScheduler {
   }
 
   String? _receivedCodeForScheduler(String fileName) {
-    const String marker = "экз";
     final nowYear = DateTime.now().year;
 
     for (String word in _forbiddenWords) {
