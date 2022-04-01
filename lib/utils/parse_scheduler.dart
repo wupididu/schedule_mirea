@@ -6,15 +6,23 @@ class ParseScheduler {
   late String _group;
 
   final Map<String, String> _universGroups = {
-    'ИПТИП': 'Э',
-    'ИТУ': 'У',
-    'ИИТ': 'И',
-    'ИИИ': 'К',
-    'ИКБ': 'Б',
-    'ИРЭИ': 'Р'
+    'иптип': 'Э',
+    'иту': 'У',
+    'иит': 'И',
+    'иии': 'К',
+    'икб': 'Б',
+    'ирэи': 'Р'
   };
 
-  final _forbiddenWords = <String>{"Стромынка", "экз"};
+  final _forbiddenWords = <String>{
+    'стромынка',
+    'экз',
+    'маги',
+    'маг',
+    'магистры',
+    'расписание',
+    'колледж'
+  };
 
   ParseScheduler(String group) {
     _group = group;
@@ -36,6 +44,7 @@ class ParseScheduler {
 
   String? _receivedCodeForScheduler(String fileName) {
     final nowYear = DateTime.now().year;
+    fileName = fileName.toLowerCase();
 
     for (String word in _forbiddenWords) {
       if (fileName.contains(word)) {
@@ -59,15 +68,8 @@ class ParseScheduler {
     Document document = html.parse(response.body);
     final anchors = document.querySelectorAll('a');
 
-    int i = 1; // counter
-
     for (var anchor in anchors) {
       if (anchor.attributes['class'] == 'uk-link-toggle') {
-        if (i == 44) {
-          //limitation for  bechelor's tables
-          break;
-        }
-
         var href = anchor.attributes['href'];
         String link = href.toString();
 
@@ -77,8 +79,6 @@ class ParseScheduler {
         if (_enteredCodeGroups() == _receivedCodeForScheduler(nameLink)) {
           return link;
         }
-
-        i++;
       }
     }
     return null;
