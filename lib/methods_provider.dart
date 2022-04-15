@@ -1,6 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:schedule_mirea/db/db.dart';
-import 'repository/db_repository.dart';
+import 'package:schedule_mirea/db/controllers/group_controller.dart';
+import 'package:schedule_mirea/db/controllers/tasks_controller.dart';
+import 'package:schedule_mirea/db/db_initializer.dart';
+import 'db/controllers/schedule_controller.dart';
 import 'utils/schedule_converter.dart';
 import 'utils/schedule_file_installer.dart';
 
@@ -12,11 +14,15 @@ class MethodsProvider extends ProviderContainer {
 
   static MethodsProvider get() => _instance;
 
-  DB get db => read(dbProvider);
+  DBInitializer get db => read(dbInitializer);
 
   ScheduleConverter get scheduleConverter => read(scheduleConverterProvider);
 
-  DBRepository get dbRepository => read(dbRepositoryProvider);
+  ScheduleController get scheduleController => read(scheduleControllerProvider);
+
+  GroupController get groupController => read(groupControllerProvider);
+
+  TasksController get tasksController => read(tasksControllerProvider);
 
   ScheduleFileInstaller get scheduleFileInstaller =>
       read(scheduleFileInstallerProvider);
