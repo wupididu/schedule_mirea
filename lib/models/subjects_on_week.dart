@@ -8,7 +8,7 @@ part 'subjects_on_week.freezed.dart';
 class SubjectsOnWeek with _$SubjectsOnWeek{
   factory SubjectsOnWeek({
     required EvenDay monday,
-    required EvenDay thuesday,
+    required EvenDay tuesday,
     required EvenDay wednesday,
     required EvenDay thursday,
     required EvenDay friday,

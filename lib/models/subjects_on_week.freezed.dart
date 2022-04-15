@@ -20,14 +20,14 @@ class _$SubjectsOnWeekTearOff {
 
   _SubjectsOnWeek call(
       {required EvenDay monday,
-      required EvenDay thuesday,
+      required EvenDay tuesday,
       required EvenDay wednesday,
       required EvenDay thursday,
       required EvenDay friday,
       required EvenDay saturday}) {
     return _SubjectsOnWeek(
       monday: monday,
-      thuesday: thuesday,
+      tuesday: tuesday,
       wednesday: wednesday,
       thursday: thursday,
       friday: friday,
@@ -42,7 +42,7 @@ const $SubjectsOnWeek = _$SubjectsOnWeekTearOff();
 /// @nodoc
 mixin _$SubjectsOnWeek {
   EvenDay get monday => throw _privateConstructorUsedError;
-  EvenDay get thuesday => throw _privateConstructorUsedError;
+  EvenDay get tuesday => throw _privateConstructorUsedError;
   EvenDay get wednesday => throw _privateConstructorUsedError;
   EvenDay get thursday => throw _privateConstructorUsedError;
   EvenDay get friday => throw _privateConstructorUsedError;
@@ -60,14 +60,14 @@ abstract class $SubjectsOnWeekCopyWith<$Res> {
       _$SubjectsOnWeekCopyWithImpl<$Res>;
   $Res call(
       {EvenDay monday,
-      EvenDay thuesday,
+      EvenDay tuesday,
       EvenDay wednesday,
       EvenDay thursday,
       EvenDay friday,
       EvenDay saturday});
 
   $EvenDayCopyWith<$Res> get monday;
-  $EvenDayCopyWith<$Res> get thuesday;
+  $EvenDayCopyWith<$Res> get tuesday;
   $EvenDayCopyWith<$Res> get wednesday;
   $EvenDayCopyWith<$Res> get thursday;
   $EvenDayCopyWith<$Res> get friday;
@@ -86,7 +86,7 @@ class _$SubjectsOnWeekCopyWithImpl<$Res>
   @override
   $Res call({
     Object? monday = freezed,
-    Object? thuesday = freezed,
+    Object? tuesday = freezed,
     Object? wednesday = freezed,
     Object? thursday = freezed,
     Object? friday = freezed,
@@ -97,9 +97,9 @@ class _$SubjectsOnWeekCopyWithImpl<$Res>
           ? _value.monday
           : monday // ignore: cast_nullable_to_non_nullable
               as EvenDay,
-      thuesday: thuesday == freezed
-          ? _value.thuesday
-          : thuesday // ignore: cast_nullable_to_non_nullable
+      tuesday: tuesday == freezed
+          ? _value.tuesday
+          : tuesday // ignore: cast_nullable_to_non_nullable
               as EvenDay,
       wednesday: wednesday == freezed
           ? _value.wednesday
@@ -128,9 +128,9 @@ class _$SubjectsOnWeekCopyWithImpl<$Res>
   }
 
   @override
-  $EvenDayCopyWith<$Res> get thuesday {
-    return $EvenDayCopyWith<$Res>(_value.thuesday, (value) {
-      return _then(_value.copyWith(thuesday: value));
+  $EvenDayCopyWith<$Res> get tuesday {
+    return $EvenDayCopyWith<$Res>(_value.tuesday, (value) {
+      return _then(_value.copyWith(tuesday: value));
     });
   }
 
@@ -172,7 +172,7 @@ abstract class _$SubjectsOnWeekCopyWith<$Res>
   @override
   $Res call(
       {EvenDay monday,
-      EvenDay thuesday,
+      EvenDay tuesday,
       EvenDay wednesday,
       EvenDay thursday,
       EvenDay friday,
@@ -181,7 +181,7 @@ abstract class _$SubjectsOnWeekCopyWith<$Res>
   @override
   $EvenDayCopyWith<$Res> get monday;
   @override
-  $EvenDayCopyWith<$Res> get thuesday;
+  $EvenDayCopyWith<$Res> get tuesday;
   @override
   $EvenDayCopyWith<$Res> get wednesday;
   @override
@@ -206,7 +206,7 @@ class __$SubjectsOnWeekCopyWithImpl<$Res>
   @override
   $Res call({
     Object? monday = freezed,
-    Object? thuesday = freezed,
+    Object? tuesday = freezed,
     Object? wednesday = freezed,
     Object? thursday = freezed,
     Object? friday = freezed,
@@ -217,9 +217,9 @@ class __$SubjectsOnWeekCopyWithImpl<$Res>
           ? _value.monday
           : monday // ignore: cast_nullable_to_non_nullable
               as EvenDay,
-      thuesday: thuesday == freezed
-          ? _value.thuesday
-          : thuesday // ignore: cast_nullable_to_non_nullable
+      tuesday: tuesday == freezed
+          ? _value.tuesday
+          : tuesday // ignore: cast_nullable_to_non_nullable
               as EvenDay,
       wednesday: wednesday == freezed
           ? _value.wednesday
@@ -246,7 +246,7 @@ class __$SubjectsOnWeekCopyWithImpl<$Res>
 class _$_SubjectsOnWeek implements _SubjectsOnWeek {
   _$_SubjectsOnWeek(
       {required this.monday,
-      required this.thuesday,
+      required this.tuesday,
       required this.wednesday,
       required this.thursday,
       required this.friday,
@@ -255,7 +255,7 @@ class _$_SubjectsOnWeek implements _SubjectsOnWeek {
   @override
   final EvenDay monday;
   @override
-  final EvenDay thuesday;
+  final EvenDay tuesday;
   @override
   final EvenDay wednesday;
   @override
@@ -267,7 +267,7 @@ class _$_SubjectsOnWeek implements _SubjectsOnWeek {
 
   @override
   String toString() {
-    return 'SubjectsOnWeek(monday: $monday, thuesday: $thuesday, wednesday: $wednesday, thursday: $thursday, friday: $friday, saturday: $saturday)';
+    return 'SubjectsOnWeek(monday: $monday, tuesday: $tuesday, wednesday: $wednesday, thursday: $thursday, friday: $friday, saturday: $saturday)';
   }
 
   @override
@@ -276,7 +276,7 @@ class _$_SubjectsOnWeek implements _SubjectsOnWeek {
         (other.runtimeType == runtimeType &&
             other is _SubjectsOnWeek &&
             const DeepCollectionEquality().equals(other.monday, monday) &&
-            const DeepCollectionEquality().equals(other.thuesday, thuesday) &&
+            const DeepCollectionEquality().equals(other.tuesday, tuesday) &&
             const DeepCollectionEquality().equals(other.wednesday, wednesday) &&
             const DeepCollectionEquality().equals(other.thursday, thursday) &&
             const DeepCollectionEquality().equals(other.friday, friday) &&
@@ -287,7 +287,7 @@ class _$_SubjectsOnWeek implements _SubjectsOnWeek {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(monday),
-      const DeepCollectionEquality().hash(thuesday),
+      const DeepCollectionEquality().hash(tuesday),
       const DeepCollectionEquality().hash(wednesday),
       const DeepCollectionEquality().hash(thursday),
       const DeepCollectionEquality().hash(friday),
@@ -302,7 +302,7 @@ class _$_SubjectsOnWeek implements _SubjectsOnWeek {
 abstract class _SubjectsOnWeek implements SubjectsOnWeek {
   factory _SubjectsOnWeek(
       {required EvenDay monday,
-      required EvenDay thuesday,
+      required EvenDay tuesday,
       required EvenDay wednesday,
       required EvenDay thursday,
       required EvenDay friday,
@@ -311,7 +311,7 @@ abstract class _SubjectsOnWeek implements SubjectsOnWeek {
   @override
   EvenDay get monday;
   @override
-  EvenDay get thuesday;
+  EvenDay get tuesday;
   @override
   EvenDay get wednesday;
   @override
