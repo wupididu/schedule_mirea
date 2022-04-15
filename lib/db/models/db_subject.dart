@@ -1,15 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:schedule_mirea/db/models/db_item.dart';
-import 'package:schedule_mirea/models/subject_from_table.dart';
+import '../../models/subject_from_table.dart';
 
-class DBSubject with DBItem {
-  @override
-  String getTableName() => tableName;
-
+class DBSubject {
   static const tableName = 'subject';
 
-  static const columnId = 'id';
+  static const columnId = 'subject_id';
   static const columnName = 'name';
   static const columnRoom = 'room';
   static const columnType = 'type';
@@ -50,7 +46,6 @@ class DBSubject with DBItem {
         teacher: map[columnTeacher],
       );
 
-  @override
   Map<String, dynamic> toMap() => {
         if (id != null) columnId: id,
         columnName: name,
@@ -59,13 +54,22 @@ class DBSubject with DBItem {
         columnTeacher: teacher,
       };
 
-  static bool isMatch<T extends DBItem>() => T.toString() == 'DBSubject';
-
   @override
-  int? getId() => id;
-
-  @override
-  void setId(int id) {
-    this.id = id;
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is DBSubject &&
+            const DeepCollectionEquality().equals(other.name, name) &&
+            const DeepCollectionEquality().equals(other.teacher, teacher) &&
+            const DeepCollectionEquality().equals(other.room, room) &&
+            const DeepCollectionEquality().equals(other.type, type));
   }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(name),
+      const DeepCollectionEquality().hash(room),
+      const DeepCollectionEquality().hash(teacher),
+      const DeepCollectionEquality().hash(type));
 }

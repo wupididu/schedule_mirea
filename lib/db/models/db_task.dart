@@ -1,20 +1,14 @@
 import 'package:flutter/foundation.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:schedule_mirea/db/models/db_item.dart';
-import './db_subject.dart';
+import 'state_of_task.dart';
 
-class DBTask with DBItem {
-  @override
-  String getTableName() => tableName;
-
+class DBTask{
   static const tableName = 'task';
 
-  static const columnId = 'id';
+  static const columnId = 'task_id';
   static const columnName = 'name';
   static const columnDeadline = 'deadline';
   static const columnDescription = 'description';
   static const columnStateOfTask = 'state_of_task';
-  static const columnSubjectId = 'subject_id';
 
   static const createTableQuery = ''' 
     create table $tableName (
@@ -22,9 +16,8 @@ class DBTask with DBItem {
       $columnName text not null,
       $columnDeadline datetime not null,
       $columnDescription text not null,
-      $columnSubjectId int not null,
-      constraint fk_${DBSubject.tableName} foreign key ($columnSubjectId) references ${DBSubject.tableName} (${DBSubject.columnId}) on delete cascade
-    )
+      $columnStateOfTask text not null
+     )
   ''';
 
   int? id;
@@ -32,7 +25,6 @@ class DBTask with DBItem {
   DateTime deadline;
   String description;
   StateOfTask stateOfTask;
-  int subjectId;
 
   DBTask({
     this.id,
@@ -40,43 +32,22 @@ class DBTask with DBItem {
     required this.deadline,
     required this.description,
     required this.stateOfTask,
-    required this.subjectId,
   });
 
   factory DBTask.fromMap(Map<String, dynamic> map) => DBTask(
         id: map[columnId],
         name: map[columnName],
-        deadline: map[columnDeadline],
+        deadline: DateTime.parse(map[columnDeadline]),
         description: map[columnDescription],
         stateOfTask: StateOfTask.values.firstWhere(
             (element) => describeEnum(element) == map[columnStateOfTask]),
-        subjectId: map[columnSubjectId],
       );
 
-  @override
   Map<String, dynamic> toMap() => {
         if (id != null) columnId: id,
         columnName: name,
-        columnDeadline: deadline,
+        columnDeadline: deadline.toString(),
         columnDescription: description,
         columnStateOfTask: describeEnum(stateOfTask),
-        columnSubjectId: subjectId,
       };
-
-  static bool isMatch<T extends DBItem>() => T.toString() == 'DBTask';
-
-  @override
-  int? getId() => id;
-
-  @override
-  void setId(int id) {
-    this.id = id;
-  }
-}
-
-enum StateOfTask {
-  backlog,
-  inProgress,
-  doneNotPassed,
-  doneAndPassed,
 }
