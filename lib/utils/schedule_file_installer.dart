@@ -7,7 +7,7 @@ import 'package:path_provider/path_provider.dart';
 class ScheduleFileInstaller {
   Future<String> get scheduleFilePath async {
     var documentDirectory = await getApplicationDocumentsDirectory();
-    return documentDirectory.path + "/shedule.xlsx";
+    return documentDirectory.path + "/schedule.xlsx";
   }
 
   Future<void> downloadFile(String uri) async {
