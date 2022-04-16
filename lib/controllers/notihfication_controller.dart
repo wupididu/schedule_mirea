@@ -1,31 +1,42 @@
 import 'dart:async';
 
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../db/models/task.dart';
 import 'tasks_controller.dart';
 import '../utils/settings.dart';
-import 'package:timezone/data/latest_all.dart' as tz;
-import 'package:timezone/timezone.dart' as tz;
 
 class NotificationController {
   final TasksController _tasksController;
   final Settings _settings;
-  final _notification = FlutterLocalNotificationsPlugin();
-  final _onNotifications = StreamController<String?>();
-  Stream<String?> onNotifications() => _onNotifications.stream;
-
   NotificationController(this._tasksController, this._settings);
 
   Future<void> init() async {
-    const android = AndroidInitializationSettings('@mipmap/ic_launcher');
-    const iOS = IOSInitializationSettings();
-    const settings = InitializationSettings(android: android, iOS: iOS);
-    await _notification.initialize(settings,
-        onSelectNotification: (payload) async {
-      _onNotifications.add(payload);
+    AwesomeNotifications().initialize(
+        null,
+        [
+          NotificationChannel(
+              channelGroupKey: 'basic_channel_group',
+              channelKey: 'scheduled',
+              channelName: 'Basic notifications',
+              channelDescription: 'Notification channel for basic tests',
+              defaultColor: Color(0xFF9D50DD),
+              ledColor: Colors.white)
+        ],
+        channelGroups: [
+          NotificationChannelGroup(
+              channelGroupkey: 'basic_channel_group',
+              channelGroupName: 'Basic group')
+        ],
+        debug: true,
+    );
+
+    AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
+      if (!isAllowed) {
+        AwesomeNotifications().requestPermissionToSendNotifications();
+      }
     });
-    tz.initializeTimeZones();
   }
 
   Future<void> addNotificationForTask(Task task) async {
@@ -38,15 +49,17 @@ class NotificationController {
     if (task.deadline.day - DateTime.now().day >= notificationDays) {
       time = task.deadline.add(Duration(days: -notificationDays));
       title = "Приближается дедлайн по задаче ${task.name}";
-      body = "До дедлайна дней: $notificationDays \n"
-          "Задача: ${task.name}\n"
-          "Предмет: ${subject.name}";
+      body = "До дедлайна дней: $notificationDays. "
+          "Задача: ${task.name}. "
+          "Предмет: ${subject.name}. "
+          "Время: ${task.deadline.hour}:${task.deadline.minute}";
     } else {
       time = task.deadline.add(const Duration(days: -1));
       title = "Завтра дедлайн по задаче ${task.name}";
-      body = "До дедлайна дней: 1 \n"
-          "Задача: ${task.name}\n"
-          "Предмет: ${subject.name}";
+      body = "До дедлайна дней: 1. "
+          "Задача: ${task.name}. "
+          "Предмет: ${subject.name} "
+          "Время: ${task.deadline.hour}:${task.deadline.minute}";
     }
 
     _scheduleNotification(
@@ -64,7 +77,7 @@ class NotificationController {
       throw Exception("Grope code not exist in the settings");
     }
 
-    await _notification.cancelAll();
+    await AwesomeNotifications().cancelAll();
 
     final tasks = await _tasksController.getTasks(groupCode: code);
 
@@ -77,33 +90,22 @@ class NotificationController {
     int id = 0,
     String? title,
     String? body,
-    String? payload,
+    Map<String, String>? payload,
     required DateTime time,
   }) async {
-    _notification.zonedSchedule(
-      id,
-      title,
-      body,
-      tz.TZDateTime.from(time, tz.local),
-      await _notificationDetails(),
-      payload: payload,
-      uiLocalNotificationDateInterpretation:
-          UILocalNotificationDateInterpretation.absoluteTime,
-      androidAllowWhileIdle: true,
-      matchDateTimeComponents: DateTimeComponents.dateAndTime,
-    );
-  }
-
-  Future<NotificationDetails> _notificationDetails() async {
-    return const NotificationDetails(
-      android: AndroidNotificationDetails(
-        'channel id',
-        'channel name',
-        channelDescription: 'channel description',
-        importance: Importance.max,
-      ),
-      iOS: IOSNotificationDetails(),
-    );
+    await AwesomeNotifications().createNotification(
+        content: NotificationContent(
+          id: id,
+          channelKey: 'scheduled',
+          title: title,
+          body: body,
+          payload: payload,
+          category: NotificationCategory.Reminder,
+          wakeUpScreen: true,
+          autoDismissible: false,
+          notificationLayout: NotificationLayout.BigText,
+        ),
+        schedule: NotificationCalendar.fromDate(date: time));
   }
 }
 
