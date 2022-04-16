@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../db/models/task.dart';
 import 'tasks_controller.dart';
 import '../utils/settings.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
@@ -27,6 +28,35 @@ class NotificationController {
     tz.initializeTimeZones();
   }
 
+  Future<void> addNotificationForTask(Task task) async {
+    final notificationDays = (await _settings.getDays());
+
+    late final DateTime time;
+    late final String title;
+    late final String body;
+    final subject = await _tasksController.getSubjectByTask(task.id);
+    if (task.deadline.day - DateTime.now().day >= notificationDays) {
+      time = task.deadline.add(Duration(days: -notificationDays));
+      title = "Приближается дедлайн по задаче ${task.name}";
+      body = "До дедлайна дней: $notificationDays \n"
+          "Задача: ${task.name}\n"
+          "Предмет: ${subject.name}";
+    } else {
+      time = task.deadline.add(const Duration(days: -1));
+      title = "Завтра дедлайн по задаче ${task.name}";
+      body = "До дедлайна дней: 1 \n"
+          "Задача: ${task.name}\n"
+          "Предмет: ${subject.name}";
+    }
+
+    _scheduleNotification(
+      id: task.id,
+      title: title,
+      body: body,
+      time: time,
+    );
+  }
+
   /// Если не передать код группы, то он возьмется из настроек
   Future<void> updateNotifications([String? groupCode]) async {
     final code = groupCode ?? await _settings.getGroup();
@@ -37,32 +67,10 @@ class NotificationController {
     await _notification.cancelAll();
 
     final tasks = await _tasksController.getTasks(groupCode: code);
-    final notificationDays = (await _settings.getDays());
 
     tasks
         .where((element) => DateTime.now().compareTo(element.deadline) == -1)
-        .forEach((element) async {
-      late final DateTime time;
-      late final String title;
-      late final String body;
-      final subject = await _tasksController.getSubjectByTask(element.id);
-      if (element.deadline.day - DateTime.now().day >= notificationDays) {
-        time = element.deadline.add(Duration(days: -notificationDays));
-        title = "Приближается дедлайн по задаче ${element.name}";
-        body = "До дедлайна дней: $notificationDays \n"
-            "Задача: ${element.name}\n"
-            "Предмет: ${subject.name}";
-      } else {
-        time = element.deadline.add(const Duration(days: -1));
-        title = "Завтра дедлайн по задаче ${element.name}";
-        body = "До дедлайна дней: 1 \n"
-            "Задача: ${element.name}\n"
-            "Предмет: ${subject.name}";
-      }
-
-      _scheduleNotification(
-          id: element.id, title: title, body: body, time: time);
-    });
+        .forEach(addNotificationForTask);
   }
 
   Future<void> _scheduleNotification({
