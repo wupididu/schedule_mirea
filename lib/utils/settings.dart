@@ -1,3 +1,4 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Settings {
@@ -27,11 +28,11 @@ class Settings {
     await prefs.setString('group', group);
   }
 
-  Future<int?> getDays() async{
+  Future<int> getDays() async{
     if (!_isInit){
       throw Exception('Settings not init');
     }
-    return prefs.getInt('days');
+    return prefs.getInt('days') ?? 3;
   }
 
   Future<String?> getGroup() async {
@@ -41,3 +42,5 @@ class Settings {
     return prefs.getString('group');
   }
 }
+
+final settingsProvider = Provider((ref) => Settings.instance);
