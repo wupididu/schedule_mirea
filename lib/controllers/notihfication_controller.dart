@@ -27,6 +27,7 @@ class NotificationController {
     tz.initializeTimeZones();
   }
 
+  /// Если не передать код группы, то он возьмется из настроек
   Future<void> updateNotifications([String? groupCode]) async {
     final code = groupCode ?? await _settings.getGroup();
     if (code == null) {
