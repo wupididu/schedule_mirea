@@ -3,7 +3,7 @@ import 'package:schedule_mirea/db/db.dart';
 import 'package:schedule_mirea/db/models/db_task.dart';
 import 'package:schedule_mirea/db/models/state_of_task.dart';
 
-import '../models/task.dart';
+import '../db/models/task.dart';
 
 class TasksController {
   final DB _db;

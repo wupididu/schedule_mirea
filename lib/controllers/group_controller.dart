@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../db.dart';
+import '../db/db.dart';
 
 class GroupController {
   final DB _db;
