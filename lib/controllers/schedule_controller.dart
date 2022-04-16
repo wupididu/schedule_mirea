@@ -1,13 +1,13 @@
 import 'package:riverpod/riverpod.dart';
 import 'package:schedule_mirea/utils/schedule_file_installer.dart';
-import '../db.dart';
-import '../models/db_schedule_day.dart';
+import '../db/db.dart';
+import '../db/models/db_groups.dart';
+import '../db/models/db_schedule_day.dart';
+import '../db/models/db_subject.dart';
 import '../../models/even_day.dart';
 import '../../models/subject_from_table.dart';
 import '../../utils/schedule_converter.dart';
-import '../models/db_groups.dart';
-import '../models/db_subject.dart';
-import '../models/subject.dart';
+import '../db/models/subject.dart';
 
 class ScheduleController {
   final DB _db;

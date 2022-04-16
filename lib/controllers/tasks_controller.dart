@@ -3,7 +3,8 @@ import 'package:schedule_mirea/db/db.dart';
 import 'package:schedule_mirea/db/models/db_task.dart';
 import 'package:schedule_mirea/db/models/state_of_task.dart';
 
-import '../models/task.dart';
+import '../db/models/subject.dart';
+import '../db/models/task.dart';
 
 class TasksController {
   final DB _db;
@@ -70,6 +71,17 @@ class TasksController {
 
   Future<void> deleteTask(int taskId) async {
     await _db.deleteTask(taskId);
+  }
+
+
+  Future<Subject> getSubjectByTask(int taskId) async {
+    final subject = await _db.getSubjectByTask(taskId);
+    return Subject(
+        id: subject.id!,
+        name: subject.name,
+        room: subject.room,
+        type: subject.type,
+        teacher: subject.teacher);
   }
 }
 

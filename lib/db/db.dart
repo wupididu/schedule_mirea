@@ -248,6 +248,20 @@ class DB {
     );
   }
 
+  Future<DBSubject> getSubjectByTask(int taskId) async {
+    final query = '''
+      select s.* from ${DBSubject.tableName} s
+      inner join ${DBGroupXTask.tableName} g
+      on g.${DBGroupXTask.columnTaskId} = $taskId and
+      s.${DBSubject.columnId} = g.${DBGroupXTask.columnSubjectId}
+    ''';
+    final result = await _db.rawQuery(query);
+    if (result.isEmpty){
+      throw Exception('task not have subject');
+    }
+    return DBSubject.fromMap(result.first);
+  }
+
   Future<void> _deleteUselessSubject() async {
     final allSchedules = await _db.query(DBSchedule.tableName);
     final usingSubjectIds =
