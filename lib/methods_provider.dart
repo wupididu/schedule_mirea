@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:schedule_mirea/controllers/notihfication_controller.dart';
+import 'package:schedule_mirea/controllers/notification_controller.dart';
 import 'package:schedule_mirea/db/db_initializer.dart';
 import 'package:schedule_mirea/ui/task_editor/task_editor_controller.dart';
 import 'package:schedule_mirea/utils/settings.dart';
