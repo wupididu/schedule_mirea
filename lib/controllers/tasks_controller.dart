@@ -36,7 +36,7 @@ class TasksController {
         .toList();
   }
 
-  Future<void> insertTask({
+  Future<Task> insertTask({
     required String name,
     required DateTime deadline,
     required String description,
@@ -50,10 +50,18 @@ class TasksController {
       description: description,
       stateOfTask: stateOfTask,
     );
-    await _db.insertTask(
+    final id = await _db.insertTask(
       task: task,
       groupCode: groupCode,
       subjectId: subjectId,
+    );
+
+    return Task(
+      id: id,
+      name: name,
+      deadline: deadline,
+      description: description,
+      stateOfTask: stateOfTask,
     );
   }
 
@@ -72,7 +80,6 @@ class TasksController {
   Future<void> deleteTask(int taskId) async {
     await _db.deleteTask(taskId);
   }
-
 
   Future<Subject> getSubjectByTask(int taskId) async {
     final subject = await _db.getSubjectByTask(taskId);
