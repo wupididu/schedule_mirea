@@ -177,7 +177,7 @@ class DB {
     return DBSubject.fromMap(resSubject.first);
   }
 
-  Future<void> insertTask({
+  Future<int> insertTask({
     required DBTask task,
     required String groupCode,
     required int subjectId,
@@ -193,6 +193,8 @@ class DB {
     );
 
     await _db.insert(DBGroupXTask.tableName, groupXTask.toMap());
+
+    return taskId;
   }
 
   Future<List<DBTask>> getTasks(String groupCode) async {

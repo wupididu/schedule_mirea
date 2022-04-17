@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -14,32 +15,52 @@ class Settings {
     _isInit = true;
   }
 
-  void setDaysDeadline(int daysDeadline)  async {
+  Future<void> setDaysDeadline(int daysDeadline)  async {
     if (!_isInit){
       throw Exception('Settings not init');
     }
     await prefs.setInt('days', daysDeadline);
   }
 
-  void setGroup(String group) async {
+  Future<void> setGroup(String group) async {
     if (!_isInit){
       throw Exception('Settings not init');
     }
     await prefs.setString('group', group);
   }
 
-  Future<int> getDays() async{
+  Future<void> setTimeNotification(TimeOfDay timeOfDay) async {
+    if (!_isInit){
+      throw Exception('Settings not init');
+    }
+    final time = DateTime(0, 1, 1, timeOfDay.hour, timeOfDay.minute);
+    await prefs.setString('time_notifications', time.toString());
+  }
+
+  int getDays() {
     if (!_isInit){
       throw Exception('Settings not init');
     }
     return prefs.getInt('days') ?? 3;
   }
 
-  Future<String?> getGroup() async {
+  String? getGroup() {
     if (!_isInit){
       throw Exception('Settings not init');
     }
     return prefs.getString('group');
+  }
+
+  TimeOfDay getTimeNotification() {
+    if (!_isInit){
+      throw Exception('Settings not init');
+    }
+    final value = prefs.getString('time_notifications');
+    if (value == null){
+      throw Exception('Time notifications not exist in the settings');
+    }
+    final dateTime = DateTime.parse(value);
+    return TimeOfDay.fromDateTime(dateTime);
   }
 }
 

@@ -14,22 +14,22 @@ class NotificationController {
 
   Future<void> init() async {
     AwesomeNotifications().initialize(
-        null,
-        [
-          NotificationChannel(
-              channelGroupKey: 'basic_channel_group',
-              channelKey: 'scheduled',
-              channelName: 'Basic notifications',
-              channelDescription: 'Notification channel for basic tests',
-              defaultColor: Color(0xFF9D50DD),
-              ledColor: Colors.white)
-        ],
-        channelGroups: [
-          NotificationChannelGroup(
-              channelGroupkey: 'basic_channel_group',
-              channelGroupName: 'Basic group')
-        ],
-        debug: true,
+      null,
+      [
+        NotificationChannel(
+            channelGroupKey: 'basic_channel_group',
+            channelKey: 'scheduled',
+            channelName: 'Basic notifications',
+            channelDescription: 'Notification channel for basic tests',
+            defaultColor: Color(0xFF9D50DD),
+            ledColor: Colors.white)
+      ],
+      channelGroups: [
+        NotificationChannelGroup(
+            channelGroupkey: 'basic_channel_group',
+            channelGroupName: 'Basic group')
+      ],
+      debug: true,
     );
 
     AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
@@ -40,7 +40,8 @@ class NotificationController {
   }
 
   Future<void> addNotificationForTask(Task task) async {
-    final notificationDays = (await _settings.getDays());
+    final notificationDays = _settings.getDays();
+    final timeNotifications = _settings.getTimeNotification();
 
     late final DateTime time;
     late final String title;
@@ -66,13 +67,18 @@ class NotificationController {
       id: task.id,
       title: title,
       body: body,
-      time: time,
+      time: time.add(
+        Duration(
+          hours: timeNotifications.hour,
+          minutes: timeNotifications.minute,
+        ),
+      ),
     );
   }
 
   /// Если не передать код группы, то он возьмется из настроек
   Future<void> updateNotifications([String? groupCode]) async {
-    final code = groupCode ?? await _settings.getGroup();
+    final code = groupCode ?? _settings.getGroup();
     if (code == null) {
       throw Exception("Grope code not exist in the settings");
     }
