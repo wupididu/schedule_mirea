@@ -3,7 +3,6 @@ import 'package:flutter_quill/flutter_quill.dart' hide Text;
 import 'package:schedule_mirea/methods_provider.dart';
 import 'package:schedule_mirea/ui/consts.dart';
 import 'package:schedule_mirea/ui/task_editor/task_editor_controller.dart';
-import 'package:schedule_mirea/ui/task_editor/task_editor_pop_menu.dart';
 
 import '../../db/models/task.dart';
 
@@ -41,21 +40,20 @@ class _TaskEditorPageState extends State<TaskEditorPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: const Icon(
-              Icons.arrow_back_ios,
-              color: kTextColor,
-            )),
+        elevation: 0,
         leadingWidth: 30,
+        leading: IconButton(
+          onPressed: _onPressArrowBackButton,
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            color: kTextColor,
+          ),
+        ),
         title: Text(
           'задание',
           style: Theme.of(context).textTheme.titleMedium,
         ),
-        elevation: 0,
-        actions: const [TaskEditorPopMenu()],
+        actions: _actions,
       ),
       body: Column(
         children: [
@@ -88,6 +86,86 @@ class _TaskEditorPageState extends State<TaskEditorPage> {
           ),
         ],
       ),
+    );
+  }
+
+  void _onPressArrowBackButton() {
+    if (MethodsProvider.get().taskEditorController.isUnsafe()) {
+      showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+                title: const Text('Сохранить изменения?'),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      MethodsProvider.get().taskEditorController.saveTask();
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('да'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('нет'),
+                  ),
+                ],
+              )).then((value) => Navigator.of(context).pop());
+    } else {
+      Navigator.of(context).pop();
+    }
+  }
+
+  List<Widget> get _actions => [
+        IconButton(
+          onPressed: () =>
+              MethodsProvider.get().taskEditorController.saveTask(),
+          icon: const Icon(
+            Icons.save_outlined,
+            color: kTextColor,
+          ),
+        ),
+        IconButton(
+          onPressed: _onPressCalendarButton,
+          icon: const Icon(
+            Icons.calendar_today_outlined,
+            color: kTextColor,
+          ),
+        ),
+        IconButton(
+          onPressed: () {
+            MethodsProvider.get().taskEditorController.deleteTask();
+            Navigator.pop(context);
+          },
+          icon: const Icon(
+            Icons.delete_outline,
+            color: kTextColor,
+          ),
+        ),
+      ];
+
+  void _onPressCalendarButton() {
+    showDatePicker(
+      context: context,
+      initialDate:
+          MethodsProvider.get().taskEditorController.deadline ?? DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime(DateTime.now().year + 1),
+      currentDate: MethodsProvider.get().taskEditorController.deadline,
+      builder: (context, child) => Theme(
+        data: ThemeData(
+          colorScheme: const ColorScheme.light().copyWith(
+            primary: kPrimaryColor,
+          ),
+        ),
+        child: child!,
+      ),
+    ).then(
+      (value) {
+        if (value != null) {
+          MethodsProvider.get().taskEditorController.deadline = value;
+        }
+      },
     );
   }
 }

@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:schedule_mirea/controllers/tasks_controller.dart';
@@ -16,42 +16,61 @@ class TaskEditorController {
   final Settings _settings;
   Task? _task;
   int? _subjectId;
+  DateTime? deadline;
 
   TaskEditorController(this._tasksController, this._settings);
 
   void init(int subjectId, [Task? task]) {
-    titleController = TextEditingController();
+    final document = task == null
+        ? Document()
+        : Document.fromJson(jsonDecode(task.description));
 
-    if (task == null) {
-      quillController = QuillController.basic();
-    } else {
-      final text = jsonDecode(task.description);
-      quillController = QuillController(
-        document: Document.fromJson(text),
-        selection: const TextSelection.collapsed(offset: 0),
-      );
-      titleController.text = task.name;
-    }
+    titleController = TextEditingController(text: task?.name);
+    quillController = QuillController(
+        document: document,
+        selection: const TextSelection.collapsed(offset: 0));
 
     _task = task;
     _subjectId = subjectId;
+    deadline = task?.deadline ?? _getDefaultDateTime;
   }
 
   void dispose() {
     quillController.dispose();
     titleController.dispose();
     _task = null;
-    _subjectId;
+    _subjectId = null;
+    deadline = null;
   }
 
   void deleteTask() {
     quillController.clear();
     titleController.clear();
+    deadline = null;
     if (_task == null) {
       return;
     }
     _tasksController.deleteTask(_task!.id);
     _task = null;
+  }
+
+  bool isUnsafe() {
+    if (_task == null || deadline == null) {
+      return true;
+    }
+    final text = _task!.description;
+    final title = _task!.name;
+    final tDeadline = _task!.deadline;
+
+    final newText = jsonEncode(quillController.document.toDelta().toJson());
+    final newTitle = titleController.text;
+
+    if (newText != text ||
+        newTitle != title ||
+        tDeadline.compareTo(deadline!) != 0) {
+      return true;
+    }
+    return false;
   }
 
   Future<void> saveTask() async {
@@ -60,38 +79,52 @@ class TaskEditorController {
     }
 
     if (_task == null) {
-      final name = titleController.text;
-      // TODO: надо еще подумать как выбирать дату
-      final deadline = DateTime.now();
-      final description =
-          jsonEncode(quillController.document.toDelta().toJson());
-      const stateOfTask = StateOfTask.backlog;
-      final groupCode = await _settings.getGroup();
-      if(groupCode == null){
-        throw Exception('');
-      }
-      final subjectId = _subjectId!;
-
-      _task = await _tasksController.insertTask(
-        name: name,
-        deadline: deadline,
-        description: description,
-        stateOfTask: stateOfTask,
-        groupCode: groupCode,
-        subjectId: subjectId,
-      );
+      _saveTask();
     } else {
-      final name = titleController.text;
-      final description =
-      jsonEncode(quillController.document.toDelta().toJson());
-
-      final task = _task!.copyWith(
-        name: name,
-        description: description,
-      );
-      await _tasksController.updateTask(task);
-      print('updated');
+      _updateTask();
     }
+  }
+
+  Future<void> _saveTask() async {
+    final name = titleController.text;
+    final dateNotification = deadline ?? _getDefaultDateTime;
+    final description = jsonEncode(quillController.document.toDelta().toJson());
+    const stateOfTask = StateOfTask.backlog;
+    final groupCode = _settings.getGroup();
+    if (groupCode == null) {
+      throw Exception('');
+    }
+    final subjectId = _subjectId!;
+
+    print(dateNotification);
+
+    _task = await _tasksController.insertTask(
+      name: name,
+      deadline: dateNotification,
+      description: description,
+      stateOfTask: stateOfTask,
+      groupCode: groupCode,
+      subjectId: subjectId,
+    );
+  }
+
+  Future<void> _updateTask() async {
+    final name = titleController.text;
+    final description = jsonEncode(quillController.document.toDelta().toJson());
+
+    _task = _task!.copyWith(
+      name: name,
+      description: description,
+      deadline: deadline ?? _task!.deadline,
+    );
+
+    await _tasksController.updateTask(_task!);
+  }
+
+  DateTime get _getDefaultDateTime {
+    final dateNow = DateTime.now();
+    final dayNotification = _settings.getDays();
+    return DateTime(dateNow.year, dateNow.month, dateNow.day + dayNotification);
   }
 }
 
