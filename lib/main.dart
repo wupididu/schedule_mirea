@@ -30,7 +30,6 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int? subjectId;
-  final List<Task> _tasks = [];
 
   @override
   void initState() {
@@ -47,41 +46,14 @@ class _MyHomePageState extends State<MyHomePage> {
     final subjects = await MethodsProvider.get()
         .scheduleController
         .getSubjects('ИВБО-02-19');
-    final tasks = await MethodsProvider.get()
-        .tasksController
-        .getTasks(groupCode: 'ИВБО-02-19', subjectId: subjects.first.id);
+    await MethodsProvider.get().tasksController.init();
     setState(() {
       subjectId = subjects.first.id;
-      _tasks.addAll(tasks);
     });
   }
 
   @override
-  void didUpdateWidget(covariant MyHomePage oldWidget) {
-    print('print');
-    super.didUpdateWidget(oldWidget);
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final children = _tasks
-        .map(
-          (e) => ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => TaskEditorPage(
-                    subjectId: subjectId!,
-                    task: e,
-                  ),
-                ),
-              );
-            },
-            child: Text(e.name),
-          ),
-        )
-        .toList();
     return Scaffold(
       appBar: AppBar(),
       body: Container(
@@ -89,35 +61,48 @@ class _MyHomePageState extends State<MyHomePage> {
             ? const Center(
                 child: Text('Loading ...'),
               )
-            : RefreshIndicator(
-                onRefresh: () async {
-                  final tasks = await MethodsProvider.get()
-                      .tasksController
-                      .getTasks(groupCode: 'ИВБО-02-19', subjectId: subjectId);
-                  setState(() {
-                    _tasks.clear();
-                    _tasks.addAll(tasks);
-                  });
-                },
-                child: ListView(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  children: [
-                    ...children,
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => TaskEditorPage(
-                              subjectId: subjectId!,
+            : StreamBuilder<List<Task>>(
+                stream: MethodsProvider.get().tasksController.tasksStream,
+                builder: (context, snapshot) {
+                  final List<Widget> children = snapshot.data
+                          ?.map(
+                            (e) => ElevatedButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => TaskEditorPage(
+                                      subjectId: subjectId!,
+                                      task: e,
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: Text(e.name),
                             ),
-                          ),
-                        );
-                      },
-                      child: Icon(Icons.add),
-                    ),
-                  ],
-                ),
+                          )
+                          .toList() ??
+                      [const Text('Loading')];
+                  return ListView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    children: [
+                      ...children,
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => TaskEditorPage(
+                                subjectId: subjectId!,
+                              ),
+                            ),
+                          );
+                        },
+                        child: Icon(Icons.add),
+                      ),
+                    ],
+                  );
+                },
               ),
       ),
     );

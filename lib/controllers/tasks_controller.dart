@@ -1,28 +1,52 @@
+import 'dart:async';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:schedule_mirea/db/db.dart';
 import 'package:schedule_mirea/db/models/db_task.dart';
 import 'package:schedule_mirea/db/models/state_of_task.dart';
+import 'package:schedule_mirea/utils/settings.dart';
 
 import '../db/models/subject.dart';
 import '../db/models/task.dart';
 
 class TasksController {
   final DB _db;
+  final Settings _settings;
 
-  TasksController(this._db);
+  TasksController(this._db, this._settings);
+
+  late StreamController<List<Task>> _streamController;
+
+  Stream<List<Task>> get tasksStream => _streamController.stream;
+
+  Future<void> init() async {
+    final tasks = await getTasks();
+    _streamController = StreamController();
+    _streamController.add(tasks);
+  }
+
+  Future<void> dispose() async {
+    _streamController.close();
+  }
 
   Future<List<Task>> getTasks({
-    required String groupCode,
+    String? groupCode,
     int? subjectId,
   }) async {
     await _db.initialized;
 
+    final _groupCode = groupCode ?? _settings.getGroup();
+
+    if (_groupCode == null) {
+      throw Exception('Group not exist in the settings');
+    }
+
     late List<DBTask> tasks;
 
     if (subjectId == null) {
-      tasks = await _db.getTasks(groupCode);
+      tasks = await _db.getTasks(_groupCode);
     } else {
-      tasks = await _db.getSubjectTasks(groupCode, subjectId);
+      tasks = await _db.getSubjectTasks(_groupCode, subjectId);
     }
 
     return tasks
@@ -41,9 +65,14 @@ class TasksController {
     required DateTime deadline,
     required String description,
     required StateOfTask stateOfTask,
-    required String groupCode,
     required int subjectId,
+    String? groupCode,
   }) async {
+    final _groupCode = groupCode ?? _settings.getGroup();
+    if (_groupCode == null) {
+      throw Exception('Group not exist in the settings');
+    }
+
     final task = DBTask(
       name: name,
       deadline: deadline,
@@ -52,9 +81,12 @@ class TasksController {
     );
     final id = await _db.insertTask(
       task: task,
-      groupCode: groupCode,
+      groupCode: _groupCode,
       subjectId: subjectId,
     );
+
+    getTasks(groupCode: groupCode)
+        .then((value) => _streamController.add(value));
 
     return Task(
       id: id,
@@ -74,7 +106,16 @@ class TasksController {
       stateOfTask: task.stateOfTask,
     );
 
+    final groupCode = _settings.getGroup();
+
+    if (groupCode == null) {
+      throw Exception('Group not exist in the settings');
+    }
+
     await _db.updateTask(dbTask);
+
+    getTasks(groupCode: groupCode)
+        .then((value) => _streamController.add(value));
   }
 
   Future<void> deleteTask(int taskId) async {
@@ -90,7 +131,11 @@ class TasksController {
         type: subject.type,
         teacher: subject.teacher);
   }
+
+  Future<void> updateStreamTask() async {}
 }
 
-final tasksControllerProvider =
-    Provider((ref) => TasksController(ref.watch(dbProvider)));
+final tasksControllerProvider = Provider((ref) => TasksController(
+      ref.watch(dbProvider),
+      ref.watch(settingsProvider),
+    ));
