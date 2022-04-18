@@ -81,8 +81,13 @@ class _TaskEditorPageState extends State<TaskEditorPage> {
             ),
           ),
           QuillToolbar.basic(
+            iconTheme: const QuillIconTheme(
+              iconSelectedFillColor: kPrimaryColor,
+            ),
             controller: _quillController,
             multiRowsDisplay: false,
+            onImagePickCallback: (file) async => file.path,
+            onVideoPickCallback: (file) async => file.path,
           ),
         ],
       ),
