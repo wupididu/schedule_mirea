@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:schedule_mirea/db/models/subject.dart';
 import 'package:schedule_mirea/methods_provider.dart';
 import 'package:schedule_mirea/ui/consts.dart';
 import 'package:schedule_mirea/ui/task_editor/task_editor_page.dart';
@@ -40,9 +41,9 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<void> init() async {
     await MethodsProvider.get().db.init();
     await MethodsProvider.get().settings.init();
-    MethodsProvider.get().settings
-      ..setGroup('ИВБО-02-19')
-      ..setTimeNotification(const TimeOfDay(hour: 12, minute: 0));
+    await MethodsProvider.get().settings.setGroup('ИВБО-02-19');
+    await MethodsProvider.get().settings.setTimeNotification(const TimeOfDay(hour: 12, minute: 0));
+    await MethodsProvider.get().scheduleController.addScheduleOnWeek('ИВБО-02-19');
     final subjects = await MethodsProvider.get()
         .scheduleController
         .getSubjects('ИВБО-02-19');
