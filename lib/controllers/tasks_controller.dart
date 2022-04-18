@@ -120,6 +120,12 @@ class TasksController {
 
   Future<void> deleteTask(int taskId) async {
     await _db.deleteTask(taskId);
+    final groupCode = _settings.getGroup();
+    if (groupCode == null) {
+      throw Exception('Group not exist in the settings');
+    }
+    getTasks(groupCode: groupCode)
+        .then((value) => _streamController.add(value));
   }
 
   Future<Subject> getSubjectByTask(int taskId) async {
