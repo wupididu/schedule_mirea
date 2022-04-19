@@ -1,4 +1,5 @@
 import 'package:riverpod/riverpod.dart';
+import 'package:schedule_mirea/utils/path_scheduler_provider.dart';
 import 'package:schedule_mirea/utils/schedule_file_installer.dart';
 import '../db/db.dart';
 import '../db/models/db_groups.dart';
@@ -13,14 +14,22 @@ class ScheduleController {
   final DB _db;
   final ScheduleConverter _scheduleConverter;
   final ScheduleFileInstaller _scheduleFileInstaller;
+  final PathSchedulerProvider _pathSchedulerProvider;
   ScheduleController(
     this._db,
     this._scheduleConverter,
     this._scheduleFileInstaller,
+      this._pathSchedulerProvider,
   );
 
   Future<void> addScheduleOnWeek(String groupCode) async {
     await _db.initialized;
+
+    final link = await _pathSchedulerProvider.getLink(groupCode);
+    if (link == null){
+      return;
+    }
+    await _scheduleFileInstaller.downloadFile(link);
 
     await _db.insertGroup(DBGroups(groupCode: groupCode));
 
@@ -225,4 +234,5 @@ final scheduleControllerProvider = Provider((ref) => ScheduleController(
       ref.watch(dbProvider),
       ref.watch(scheduleConverterProvider),
       ref.watch(scheduleFileInstallerProvider),
+      ref.watch(pathSchedulerProvider),
     ));

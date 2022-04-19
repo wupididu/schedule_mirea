@@ -1,8 +1,9 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:html/dom.dart';
 import 'package:http/http.dart' as http;
 import 'package:html/parser.dart' as html;
 
-class ParseScheduler {
+class PathSchedulerProvider {
   late String _group;
 
   final Map<String, String> _universGroups = {
@@ -21,18 +22,6 @@ class ParseScheduler {
     'расписание',
     'колледж'
   };
-
-  ParseScheduler(String group) {
-    _group = group;
-  }
-
-  void setGroup(String group) {
-    _group = group;
-  }
-
-  String getGroup() {
-    return _group;
-  }
 
   String _enteredCodeGroups() {
     int groupLenght = _group.length;
@@ -60,7 +49,8 @@ class ParseScheduler {
         year.substring(yearSize - 2, yearSize));
   }
 
-  Future<String?> getLink() async {
+  Future<String?> getLink(String groupCode) async {
+    _group = groupCode;
     final response =
         await http.Client().get(Uri.parse("https://www.mirea.ru/schedule/"));
     Document document = html.parse(response.body);
@@ -74,6 +64,7 @@ class ParseScheduler {
         String nameLink = link.replaceAll(' ', '_').split('/').last;
 
         if (_enteredCodeGroups() == _receivedCodeForScheduler(nameLink)) {
+          print(link);
           return link;
         }
       }
@@ -81,3 +72,5 @@ class ParseScheduler {
     return null;
   }
 }
+
+final pathSchedulerProvider = Provider((ref) => PathSchedulerProvider());

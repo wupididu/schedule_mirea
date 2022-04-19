@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:schedule_mirea/controllers/notification_controller.dart';
 import 'package:schedule_mirea/db/db_initializer.dart';
 import 'package:schedule_mirea/ui/task_editor/task_editor_controller.dart';
+import 'package:schedule_mirea/utils/path_scheduler_provider.dart';
 import 'package:schedule_mirea/utils/settings.dart';
 import 'controllers/group_controller.dart';
 import 'controllers/schedule_controller.dart';
@@ -30,4 +31,6 @@ class MethodsProvider extends ProviderContainer {
 
   TaskEditorController get taskEditorController =>
       read(taskEditorControllerProvider);
+  
+  PathSchedulerProvider get pathSchedulerProviderController => read(pathSchedulerProvider);
 }
