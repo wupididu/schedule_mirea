@@ -41,18 +41,22 @@ class _TaskEditorPageState extends State<TaskEditorPage> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        leadingWidth: 30,
+        leadingWidth: 50,
         leading: IconButton(
           onPressed: _onPressArrowBackButton,
           icon: const Icon(
-            Icons.arrow_back_ios,
+            Icons.arrow_back_ios_outlined,
             color: kTextColor,
           ),
         ),
         title: Text(
-          'задание',
-          style: Theme.of(context).textTheme.titleMedium,
+          'Задание',
+          style: Theme.of(context)
+              .textTheme
+              .titleLarge
+              ?.copyWith(color: kTextColor),
         ),
+        titleSpacing: 0,
         actions: _actions,
       ),
       body: Column(
@@ -65,15 +69,27 @@ class _TaskEditorPageState extends State<TaskEditorPage> {
                   TextFormField(
                     controller: _textController,
                     style: Theme.of(context).textTheme.headline4,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       hintText: 'Задание',
                       border: InputBorder.none,
+                      hintStyle: Theme.of(context)
+                          .textTheme
+                          .headline4
+                          ?.copyWith(color: kHintTextColor),
                     ),
                   ),
                   Expanded(
-                    child: QuillEditor.basic(
+                    child: QuillEditor(
                       controller: _quillController,
+                      scrollController: ScrollController(),
+                      scrollable: true,
+                      focusNode: FocusNode(),
+                      autoFocus: true,
                       readOnly: false,
+                      expands: false,
+                      padding: EdgeInsets.zero,
+                      keyboardAppearance: Brightness.light,
+                      placeholder: "Описание",
                     ),
                   ),
                 ],
