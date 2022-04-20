@@ -20,10 +20,14 @@ class _TaskEditorPageState extends State<TaskEditorPage> {
   late final QuillController _quillController;
   late final TextEditingController _textController;
   late final TaskEditorController _controller;
+  bool readOnly = true;
 
   @override
   void initState() {
     super.initState();
+    if (widget.task == null) {
+      readOnly = false;
+    }
     _controller = MethodsProvider.get().taskEditorController
       ..init(widget.subjectId, widget.task);
     _quillController = _controller.quillController;
@@ -63,12 +67,13 @@ class _TaskEditorPageState extends State<TaskEditorPage> {
         children: [
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 50),
+              padding: const EdgeInsets.symmetric(horizontal: 30),
               child: Column(
                 children: [
                   TextFormField(
                     controller: _textController,
                     style: Theme.of(context).textTheme.headline4,
+                    enabled: !readOnly,
                     decoration: InputDecoration(
                       hintText: 'Задание',
                       border: InputBorder.none,
@@ -79,18 +84,7 @@ class _TaskEditorPageState extends State<TaskEditorPage> {
                     ),
                   ),
                   Expanded(
-                    child: QuillEditor(
-                      controller: _quillController,
-                      scrollController: ScrollController(),
-                      scrollable: true,
-                      focusNode: FocusNode(),
-                      autoFocus: true,
-                      readOnly: false,
-                      expands: false,
-                      padding: EdgeInsets.zero,
-                      keyboardAppearance: Brightness.light,
-                      placeholder: "Описание",
-                    ),
+                    child: _getEditor(),
                   ),
                 ],
               ),
@@ -138,14 +132,28 @@ class _TaskEditorPageState extends State<TaskEditorPage> {
   }
 
   List<Widget> get _actions => [
-        IconButton(
-          onPressed: () =>
-              MethodsProvider.get().taskEditorController.saveTask(),
-          icon: const Icon(
-            Icons.save_outlined,
-            color: kTextColor,
-          ),
-        ),
+        readOnly
+            ? IconButton(
+                onPressed: () => setState(() {
+                  readOnly = false;
+                }),
+                icon: const Icon(
+                  Icons.edit,
+                  color: kTextColor,
+                ),
+              )
+            : IconButton(
+                onPressed: () async {
+                  await MethodsProvider.get().taskEditorController.saveTask();
+                  setState(() {
+                    readOnly = true;
+                  });
+                },
+                icon: const Icon(
+                  Icons.save_outlined,
+                  color: kTextColor,
+                ),
+              ),
         IconButton(
           onPressed: _onPressCalendarButton,
           icon: const Icon(
@@ -189,4 +197,30 @@ class _TaskEditorPageState extends State<TaskEditorPage> {
       },
     );
   }
+
+  QuillEditor _getEditor() => readOnly
+      ? QuillEditor(
+          controller: _quillController,
+          scrollController: ScrollController(),
+          scrollable: true,
+          focusNode: FocusNode(),
+          autoFocus: true,
+          readOnly: true,
+          expands: false,
+          padding: EdgeInsets.zero,
+          keyboardAppearance: Brightness.light,
+          placeholder: "Описание",
+        )
+      : QuillEditor(
+          controller: _quillController,
+          scrollController: ScrollController(),
+          scrollable: true,
+          focusNode: FocusNode(),
+          autoFocus: true,
+          readOnly: false,
+          expands: false,
+          padding: EdgeInsets.zero,
+          keyboardAppearance: Brightness.light,
+          placeholder: "Описание",
+        );
 }

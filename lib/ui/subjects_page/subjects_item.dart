@@ -18,20 +18,20 @@ class SubjectsItem extends StatelessWidget {
         decoration: const BoxDecoration(
             color: kSecondaryColor,
             borderRadius: BorderRadius.all(Radius.circular(15))),
-        child: Container(
-          alignment: Alignment.center,
-          width: 120,
-          height: 60,
-          child: Text(
-            name,
-            textAlign: TextAlign.center,
-            maxLines: 4,
-            style: const TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w800,
-              color: kTextColor,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+          child: Center(
+            child: Text(
+              name,
+              textAlign: TextAlign.center,
+              maxLines: 4,
+              style: const TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w800,
+                color: kTextColor,
+              ),
+              overflow: TextOverflow.ellipsis,
             ),
-            overflow: TextOverflow.ellipsis,
           ),
         ),
       ),

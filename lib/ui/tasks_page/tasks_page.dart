@@ -81,7 +81,7 @@ class _TasksPageState extends State<TasksPage> {
               builder: (context, snapshot) {
                 final notAcceptedTasks = snapshot.data
                     ?.where(
-                        (element) => element.stateOfTask == StateOfTask.backlog)
+                        (element) => element.stateOfTask != StateOfTask.doneAndPassed)
                     .map(
                       (e) => TaskItem(
                         task: e,
