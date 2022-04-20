@@ -32,31 +32,9 @@ class TaskItem extends StatelessWidget {
         },
         onLongPress: () {
           showDialog(
-              context: context,
-              builder: (context) => SimpleDialog(
-                    children: StateOfTask.values
-                        .map(
-                          (e) => SimpleDialogOption(
-                            child: Row(
-                              children: [
-                                Icon(
-                                  _statusIcon[e],
-                                  color: kAccentColor,
-                                ),
-                                const SizedBox(width: 8),
-                                Text(_status[e] ?? ''),
-                              ],
-                            ),
-                            onPressed: () {
-                              MethodsProvider.get()
-                                  .tasksController
-                                  .updateTask(task.copyWith(stateOfTask: e));
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                        )
-                        .toList(),
-                  ));
+            context: context,
+            builder: _simpleDialogBuilder,
+          );
         },
         child: Container(
           height: 80,
@@ -187,4 +165,75 @@ class TaskItem extends StatelessWidget {
     StateOfTask.doneNotPassed: Icons.done,
     StateOfTask.doneAndPassed: Icons.done_all_outlined,
   };
+
+  SimpleDialog _simpleDialogBuilder(context) => SimpleDialog(
+        children: [
+          SimpleDialogOption(
+            child: Row(
+              children: const [
+                Icon(
+                  Icons.delete,
+                  color: kAccentColor,
+                ),
+                SizedBox(width: 8),
+                Text('delete'),
+              ],
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: const Text('Удалить?'),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        MethodsProvider.get()
+                            .tasksController
+                            .deleteTask(task.id);
+                        Navigator.of(context).pop();
+                      },
+                      child: const Text(
+                        'да',
+                        style: TextStyle(color: kAccentColor),
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: const Text(
+                        'нет',
+                        style: TextStyle(color: kAccentColor),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+          ...(StateOfTask.values
+              .map(
+                (e) => SimpleDialogOption(
+                  child: Row(
+                    children: [
+                      Icon(
+                        _statusIcon[e],
+                        color: kAccentColor,
+                      ),
+                      const SizedBox(width: 8),
+                      Text(_status[e] ?? ''),
+                    ],
+                  ),
+                  onPressed: () {
+                    MethodsProvider.get()
+                        .tasksController
+                        .updateTask(task.copyWith(stateOfTask: e));
+                    Navigator.of(context).pop();
+                  },
+                ),
+              )
+              .toList())
+        ],
+      );
 }
