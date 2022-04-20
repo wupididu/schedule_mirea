@@ -12,11 +12,21 @@ import 'models/db_groups.dart';
 import 'models/db_subject.dart';
 import 'models/db_task.dart';
 
+
+/// Этот класс предоставляет взаимодействие с локальной базой данных
+///
+/// Для того чтобы начать пользоваться данным классом, надо его проинициализировать, вызвать метод [init()]
 class DB {
   static const _databaseName = 'schedule_database.db';
   late final Database _db;
   final _complete = Completer<bool>();
 
+  /// Этот метод позваоляет ждать проинициализировано ли БД
+  /// ```dart
+  ///   ...
+  ///   await DB().initialized;
+  ///   ...
+  /// ```
   Future<void> get initialized => _complete.future;
 
   DB._();
@@ -63,6 +73,9 @@ class DB {
     return await _db.insert(DBGroups.tableName, group.toMap());
   }
 
+  /// Удаляет группу из базы данных. Также удаляет все связанные с ним данные.
+  ///
+  /// Если передать несуществую группу, то вызовется ошибка
   Future<void> deleteGroup(String groupCode) async {
     final groups = await getGroups();
 
