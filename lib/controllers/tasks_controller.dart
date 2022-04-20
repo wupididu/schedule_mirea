@@ -18,15 +18,18 @@ class TasksController {
   late StreamController<List<Task>> _streamController;
 
   Stream<List<Task>> get tasksStream => _streamController.stream;
+  int? _subjectId;
 
-  Future<void> init() async {
-    final tasks = await getTasks();
+  Future<void> init(int subjectId) async {
+    _subjectId = subjectId;
+    final tasks = await getTasks(subjectId: _subjectId);
     _streamController = StreamController();
     _streamController.add(tasks);
   }
 
   Future<void> dispose() async {
     _streamController.close();
+    _subjectId = null;
   }
 
   Future<List<Task>> getTasks({
@@ -85,7 +88,7 @@ class TasksController {
       subjectId: subjectId,
     );
 
-    getTasks(groupCode: groupCode)
+    getTasks(groupCode: groupCode, subjectId: _subjectId)
         .then((value) => _streamController.add(value));
 
     return Task(
@@ -114,7 +117,7 @@ class TasksController {
 
     await _db.updateTask(dbTask);
 
-    getTasks(groupCode: groupCode)
+    getTasks(groupCode: groupCode, subjectId: _subjectId)
         .then((value) => _streamController.add(value));
   }
 
@@ -124,7 +127,7 @@ class TasksController {
     if (groupCode == null) {
       throw Exception('Group not exist in the settings');
     }
-    getTasks(groupCode: groupCode)
+    getTasks(groupCode: groupCode, subjectId: _subjectId)
         .then((value) => _streamController.add(value));
   }
 
