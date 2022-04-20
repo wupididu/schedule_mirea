@@ -35,7 +35,7 @@ class TasksController {
   }) async {
     await _db.initialized;
 
-    final _groupCode = groupCode ?? _settings.getGroup();
+    final _groupCode = groupCode ?? await _settings.getGroup();
 
     if (_groupCode == null) {
       throw Exception('Group not exist in the settings');
@@ -68,7 +68,7 @@ class TasksController {
     required int subjectId,
     String? groupCode,
   }) async {
-    final _groupCode = groupCode ?? _settings.getGroup();
+    final _groupCode = groupCode ?? await _settings.getGroup();
     if (_groupCode == null) {
       throw Exception('Group not exist in the settings');
     }
@@ -106,7 +106,7 @@ class TasksController {
       stateOfTask: task.stateOfTask,
     );
 
-    final groupCode = _settings.getGroup();
+    final groupCode = await _settings.getGroup();
 
     if (groupCode == null) {
       throw Exception('Group not exist in the settings');
@@ -120,7 +120,7 @@ class TasksController {
 
   Future<void> deleteTask(int taskId) async {
     await _db.deleteTask(taskId);
-    final groupCode = _settings.getGroup();
+    final groupCode = await _settings.getGroup();
     if (groupCode == null) {
       throw Exception('Group not exist in the settings');
     }

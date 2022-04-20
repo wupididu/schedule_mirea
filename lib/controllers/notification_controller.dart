@@ -40,8 +40,8 @@ class NotificationController {
   }
 
   Future<void> addNotificationForTask(Task task) async {
-    final notificationDays = _settings.getDays();
-    final timeNotifications = _settings.getTimeNotification();
+    final notificationDays = await _settings.getDays();
+    final timeNotifications = await _settings.getTimeNotification();
 
     late final DateTime time;
     late final String title;
@@ -78,7 +78,7 @@ class NotificationController {
 
   /// Если не передать код группы, то он возьмется из настроек
   Future<void> updateNotifications([String? groupCode]) async {
-    final code = groupCode ?? _settings.getGroup();
+    final code = groupCode ??  await _settings.getGroup();
     if (code == null) {
       throw Exception("Grope code not exist in the settings");
     }
