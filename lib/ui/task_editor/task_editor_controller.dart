@@ -32,7 +32,10 @@ class TaskEditorController {
 
     _task = task;
     _subjectId = subjectId;
-    deadline = task?.deadline ?? _getDefaultDateTime;
+    deadline = task?.deadline;
+    if (deadline == null) {
+      _getDefaultDateTime.then((value) => deadline == value);
+    }
   }
 
   void dispose() {
@@ -87,10 +90,10 @@ class TaskEditorController {
 
   Future<void> _saveTask() async {
     final name = titleController.text;
-    final dateNotification = deadline ?? _getDefaultDateTime;
+    final dateNotification = deadline ?? await _getDefaultDateTime;
     final description = jsonEncode(quillController.document.toDelta().toJson());
     const stateOfTask = StateOfTask.backlog;
-    final groupCode = _settings.getGroup();
+    final groupCode = await _settings.getGroup();
     if (groupCode == null) {
       throw Exception('');
     }
@@ -121,9 +124,9 @@ class TaskEditorController {
     await _tasksController.updateTask(_task!);
   }
 
-  DateTime get _getDefaultDateTime {
+  Future<DateTime> get _getDefaultDateTime async {
     final dateNow = DateTime.now();
-    final dayNotification = _settings.getDays();
+    final dayNotification = await _settings.getDays();
     return DateTime(dateNow.year, dateNow.month, dateNow.day + dayNotification);
   }
 }

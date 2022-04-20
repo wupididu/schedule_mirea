@@ -1,0 +1,1 @@
+class GroupCodeNullException implements Exception {}

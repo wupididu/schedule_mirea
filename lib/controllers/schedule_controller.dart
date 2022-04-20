@@ -1,4 +1,5 @@
 import 'package:riverpod/riverpod.dart';
+import 'package:schedule_mirea/exceptions/exceptions.dart';
 import 'package:schedule_mirea/utils/path_scheduler_provider.dart';
 import 'package:schedule_mirea/utils/schedule_file_installer.dart';
 import '../db/db.dart';
@@ -9,24 +10,34 @@ import '../../models/even_day.dart';
 import '../../models/subject_from_table.dart';
 import '../../utils/schedule_converter.dart';
 import '../db/models/subject.dart';
+import '../utils/settings.dart';
 
 class ScheduleController {
   final DB _db;
   final ScheduleConverter _scheduleConverter;
   final ScheduleFileInstaller _scheduleFileInstaller;
   final PathSchedulerProvider _pathSchedulerProvider;
+  final Settings _settings;
+
   ScheduleController(
     this._db,
     this._scheduleConverter,
     this._scheduleFileInstaller,
-      this._pathSchedulerProvider,
+    this._pathSchedulerProvider,
+    this._settings,
   );
 
-  Future<void> addScheduleOnWeek(String groupCode) async {
+  Future<void> addScheduleOnWeek() async {
     await _db.initialized;
 
+    final groupCode = await _settings.getGroup();
+
+    if (groupCode == null) {
+      throw Exception('Какие то проблемы, в настройках не лежит код группы');
+    }
+
     final link = await _pathSchedulerProvider.getLink(groupCode);
-    if (link == null){
+    if (link == null) {
       return;
     }
     await _scheduleFileInstaller.downloadFile(link);
@@ -109,10 +120,16 @@ class ScheduleController {
     );
   }
 
-  Future<List<Subject>> getSubjects(String groupCode) async {
+  Future<List<Subject>> getSubjects([String? groupCode]) async {
     await _db.initialized;
 
-    final subjects = await _db.getSubjects(groupCode);
+    final code = groupCode ?? await _settings.getGroup();
+
+    if (code == null){
+      throw GroupCodeNullException();
+    }
+
+    final subjects = await _db.getSubjects(code);
     return subjects
         .map((e) => Subject(
               id: e.id!,
@@ -235,4 +252,5 @@ final scheduleControllerProvider = Provider((ref) => ScheduleController(
       ref.watch(scheduleConverterProvider),
       ref.watch(scheduleFileInstallerProvider),
       ref.watch(pathSchedulerProvider),
+      ref.watch(settingsProvider),
     ));

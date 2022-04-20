@@ -18,15 +18,18 @@ class TasksController {
   late StreamController<List<Task>> _streamController;
 
   Stream<List<Task>> get tasksStream => _streamController.stream;
+  int? _subjectId;
 
-  Future<void> init() async {
-    final tasks = await getTasks();
+  Future<void> init(int subjectId) async {
+    _subjectId = subjectId;
+    final tasks = await getTasks(subjectId: _subjectId);
     _streamController = StreamController();
     _streamController.add(tasks);
   }
 
   Future<void> dispose() async {
     _streamController.close();
+    _subjectId = null;
   }
 
   Future<List<Task>> getTasks({
@@ -35,7 +38,7 @@ class TasksController {
   }) async {
     await _db.initialized;
 
-    final _groupCode = groupCode ?? _settings.getGroup();
+    final _groupCode = groupCode ?? await _settings.getGroup();
 
     if (_groupCode == null) {
       throw Exception('Group not exist in the settings');
@@ -68,7 +71,7 @@ class TasksController {
     required int subjectId,
     String? groupCode,
   }) async {
-    final _groupCode = groupCode ?? _settings.getGroup();
+    final _groupCode = groupCode ?? await _settings.getGroup();
     if (_groupCode == null) {
       throw Exception('Group not exist in the settings');
     }
@@ -85,7 +88,7 @@ class TasksController {
       subjectId: subjectId,
     );
 
-    getTasks(groupCode: groupCode)
+    getTasks(groupCode: groupCode, subjectId: _subjectId)
         .then((value) => _streamController.add(value));
 
     return Task(
@@ -106,7 +109,7 @@ class TasksController {
       stateOfTask: task.stateOfTask,
     );
 
-    final groupCode = _settings.getGroup();
+    final groupCode = await _settings.getGroup();
 
     if (groupCode == null) {
       throw Exception('Group not exist in the settings');
@@ -114,17 +117,17 @@ class TasksController {
 
     await _db.updateTask(dbTask);
 
-    getTasks(groupCode: groupCode)
+    getTasks(groupCode: groupCode, subjectId: _subjectId)
         .then((value) => _streamController.add(value));
   }
 
   Future<void> deleteTask(int taskId) async {
     await _db.deleteTask(taskId);
-    final groupCode = _settings.getGroup();
+    final groupCode = await _settings.getGroup();
     if (groupCode == null) {
       throw Exception('Group not exist in the settings');
     }
-    getTasks(groupCode: groupCode)
+    getTasks(groupCode: groupCode, subjectId: _subjectId)
         .then((value) => _streamController.add(value));
   }
 
