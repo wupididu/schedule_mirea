@@ -70,7 +70,7 @@ class ScheduleConverter {
       return null;
     }
 
-    final String name = data.value;
+    final String name = data.value ?? '';
     final String type = _sheet.rows[rowIndex][colIndex + 1]?.value ?? '';
     late final TypeOfSubject typeOfSubject;
     if (type == 'пр') {
@@ -82,8 +82,8 @@ class ScheduleConverter {
     } else {
       typeOfSubject = TypeOfSubject.none;
     }
-    final String teacher = _sheet.rows[rowIndex][colIndex + 2]?.value ?? '';
-    final String room = _sheet.rows[rowIndex][colIndex + 3]?.value ?? '';
+    final String teacher = _sheet.rows[rowIndex][colIndex + 2]?.value.toString() ?? '';
+    final String room = _sheet.rows[rowIndex][colIndex + 3]?.value.toString() ?? '';
 
     return SubjectFromTable(
       name: name,
@@ -94,6 +94,7 @@ class ScheduleConverter {
   }
 
   int _getCol(String group) {
+    print(group);
     final col = _sheet.rows[1].indexWhere((element) => element?.value == group);
 
     if (col == -1) {
