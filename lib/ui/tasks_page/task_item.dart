@@ -1,8 +1,6 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
+import 'package:schedule_mirea/db/models/state_of_task.dart';
+import 'package:schedule_mirea/methods_provider.dart';
 import 'package:schedule_mirea/ui/consts.dart';
 import 'package:schedule_mirea/ui/task_editor/task_editor_page.dart';
 
@@ -12,8 +10,12 @@ class TaskItem extends StatelessWidget {
   final Task task;
   final int subjectId;
   final bool done;
-  TaskItem({Key? key, required this.task, required this.subjectId, required this.done})
-      : super(key: key);
+  TaskItem({
+    Key? key,
+    required this.task,
+    required this.subjectId,
+    required this.done,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,11 +30,17 @@ class TaskItem extends StatelessWidget {
             ),
           );
         },
+        onLongPress: () {
+          showDialog(
+            context: context,
+            builder: _simpleDialogBuilder,
+          );
+        },
         child: Container(
           height: 80,
-          decoration: const BoxDecoration(
-            color: kPrimaryColor,
-            borderRadius: BorderRadius.all(Radius.circular(10)),
+          decoration: BoxDecoration(
+            color: _buttonColor[task.stateOfTask],
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -43,15 +51,15 @@ class TaskItem extends StatelessWidget {
                 child: Container(
                   alignment: Alignment.centerLeft,
                   height: 40,
-                  width: MediaQuery.of(context).size.width/2,
+                  width: MediaQuery.of(context).size.width / 2,
                   child: Text(
                     task.name,
                     maxLines: 3,
                     textWidthBasis: TextWidthBasis.parent,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 14,
-                      color: kButtonTextColor,
+                      color: _buttonTextColor[task.stateOfTask],
                     ),
                   ),
                 ),
@@ -64,20 +72,21 @@ class TaskItem extends StatelessWidget {
                   children: [
                     Text(
                       _formatDate(task),
-                      style: const TextStyle(
-                        color: kButtonTextColor,
+                      style: TextStyle(
+                        color: _buttonTextColor[task.stateOfTask],
                         fontSize: 12,
                       ),
                     ),
                     Container(
-                      child: const Icon(
-                        Icons.done,
-                        color: kButtonTextColor,
+                      child: Icon(
+                        _statusIcon[task.stateOfTask],
+                        color: _iconColor[task.stateOfTask],
                       ),
                       width: 40,
                       height: 40,
                       decoration: BoxDecoration(
-                        border: Border.all(color: kButtonTextColor),
+                        border:
+                            Border.all(color: _iconColor[task.stateOfTask]!),
                         borderRadius:
                             const BorderRadius.all(Radius.circular(100)),
                       ),
@@ -121,4 +130,110 @@ class TaskItem extends StatelessWidget {
     DateTime.november: 'ноябрь',
     DateTime.december: 'декабрь',
   };
+
+  final _iconColor = {
+    StateOfTask.backlog: kButtonTextColor,
+    StateOfTask.inProgress: kButtonTextColor,
+    StateOfTask.doneNotPassed: kButtonTextColor,
+    StateOfTask.doneAndPassed: kAccentColor,
+  };
+
+  final _buttonColor = {
+    StateOfTask.backlog: kPrimaryColor,
+    StateOfTask.inProgress: kPrimaryColor,
+    StateOfTask.doneNotPassed: kPrimaryColor,
+    StateOfTask.doneAndPassed: kSecondaryColor,
+  };
+
+  final _buttonTextColor = {
+    StateOfTask.backlog: kButtonTextColor,
+    StateOfTask.inProgress: kButtonTextColor,
+    StateOfTask.doneNotPassed: kButtonTextColor,
+    StateOfTask.doneAndPassed: kTextColor,
+  };
+
+  final _status = {
+    StateOfTask.backlog: 'backlog',
+    StateOfTask.inProgress: 'progress',
+    StateOfTask.doneNotPassed: 'done',
+    StateOfTask.doneAndPassed: 'passed',
+  };
+
+  final _statusIcon = {
+    StateOfTask.backlog: Icons.book_outlined,
+    StateOfTask.inProgress: Icons.work_outline,
+    StateOfTask.doneNotPassed: Icons.done,
+    StateOfTask.doneAndPassed: Icons.done_all_outlined,
+  };
+
+  SimpleDialog _simpleDialogBuilder(context) => SimpleDialog(
+        children: [
+          SimpleDialogOption(
+            child: Row(
+              children: const [
+                Icon(
+                  Icons.delete,
+                  color: kAccentColor,
+                ),
+                SizedBox(width: 8),
+                Text('delete'),
+              ],
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: const Text('Удалить?'),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        MethodsProvider.get()
+                            .tasksController
+                            .deleteTask(task.id);
+                        Navigator.of(context).pop();
+                      },
+                      child: const Text(
+                        'да',
+                        style: TextStyle(color: kAccentColor),
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: const Text(
+                        'нет',
+                        style: TextStyle(color: kAccentColor),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+          ...(StateOfTask.values
+              .map(
+                (e) => SimpleDialogOption(
+                  child: Row(
+                    children: [
+                      Icon(
+                        _statusIcon[e],
+                        color: kAccentColor,
+                      ),
+                      const SizedBox(width: 8),
+                      Text(_status[e] ?? ''),
+                    ],
+                  ),
+                  onPressed: () {
+                    MethodsProvider.get()
+                        .tasksController
+                        .updateTask(task.copyWith(stateOfTask: e));
+                    Navigator.of(context).pop();
+                  },
+                ),
+              )
+              .toList())
+        ],
+      );
 }

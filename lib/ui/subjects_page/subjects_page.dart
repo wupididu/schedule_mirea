@@ -3,7 +3,6 @@ import 'package:schedule_mirea/controllers/schedule_controller.dart';
 import 'package:schedule_mirea/methods_provider.dart';
 import 'package:schedule_mirea/models/subject_from_table.dart';
 import 'package:schedule_mirea/ui/subjects_page/subjects_item.dart';
-import 'package:schedule_mirea/utils/settings.dart';
 
 import '../../db/models/subject.dart';
 import '../consts.dart';
@@ -63,7 +62,7 @@ class _SubjectsPageState extends State<SubjectsPage> {
         crossAxisSpacing: 20,
         mainAxisSpacing: 20,
         childAspectRatio: 140 / 80,
-        padding: const EdgeInsets.all(30),
+        padding: const EdgeInsets.symmetric(horizontal: 30),
         children: mapSubject.keys
             .map((name) => SubjectsItem(name: name, types: mapSubject[name]))
             .toList(),
