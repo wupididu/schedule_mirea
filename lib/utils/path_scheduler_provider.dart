@@ -64,7 +64,6 @@ class PathSchedulerProvider {
         String nameLink = link.replaceAll(' ', '_').split('/').last;
 
         if (_enteredCodeGroups() == _receivedCodeForScheduler(nameLink)) {
-          print(link);
           return link;
         }
       }
