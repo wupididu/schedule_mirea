@@ -13,7 +13,7 @@ class Settings {
 
   Future<void> get initialized => _complete.future;
 
-  Future<void> init () async {
+  Future<void> init() async {
     if (_complete.isCompleted) {
       return;
     }
@@ -22,7 +22,7 @@ class Settings {
     _complete.complete(true);
   }
 
-  Future<void> setDaysDeadline(int daysDeadline)  async {
+  Future<void> setDaysDeadline(int daysDeadline) async {
     await initialized;
     await prefs.setInt('days', daysDeadline);
   }
@@ -51,8 +51,8 @@ class Settings {
   Future<TimeOfDay> getTimeNotification() async {
     await initialized;
     final value = prefs.getString('time_notifications');
-    if (value == null){
-      throw Exception('Time notifications not exist in the settings');
+    if (value == null) {
+      return const TimeOfDay(hour: 12, minute: 0);
     }
     final dateTime = DateTime.parse(value);
     return TimeOfDay.fromDateTime(dateTime);
