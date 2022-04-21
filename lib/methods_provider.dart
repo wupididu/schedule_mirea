@@ -1,6 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:schedule_mirea/controllers/notification_controller.dart';
 import 'package:schedule_mirea/db/db_initializer.dart';
+import 'package:schedule_mirea/ui/settings_page/settings_page_controller.dart';
+import 'package:schedule_mirea/ui/settings_page/settings_page_state_holder.dart';
 import 'package:schedule_mirea/ui/task_editor/task_editor_controller.dart';
 import 'package:schedule_mirea/utils/path_scheduler_provider.dart';
 import 'package:schedule_mirea/utils/settings.dart';
@@ -29,8 +31,15 @@ class MethodsProvider extends ProviderContainer {
 
   Settings get settings => read(settingsProvider);
 
+  SettingsPageController get settingsPageController =>
+      read(settingsPageControllerProvider);
+
+  SettingsPageStateHolder get settingsPageState =>
+      read(settingsPageStateHolder);
+
   TaskEditorController get taskEditorController =>
       read(taskEditorControllerProvider);
-  
-  PathSchedulerProvider get pathSchedulerProviderController => read(pathSchedulerProvider);
+
+  PathSchedulerProvider get pathSchedulerProviderController =>
+      read(pathSchedulerProvider);
 }
