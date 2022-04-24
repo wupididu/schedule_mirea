@@ -8,16 +8,20 @@ import 'package:schedule_mirea/models/subjects_on_day.dart';
 
 import '../models/subjects_on_week.dart';
 
+/// Утилита позволяет конвертировать файл с расписанием в модельку [SubjectsOnWeek]
+/// которая отражает в себе полное расписание.
 class ScheduleConverter {
   late Excel _excel;
   late Sheet _sheet;
 
+  /// Даннай метод необходимо вызвать, чтобы передать файл, который будет парситься
   void setFile(String fileName) {
     final bytes = File(fileName).readAsBytesSync();
     _excel = Excel.decodeBytes(bytes);
     _sheet = _excel.tables.values.first;
   }
 
+  /// Данный метод возвращает полное расписание
   SubjectsOnWeek getSubjectsOnWeek(String group) {
     final colIndex = _getCol(group);
 
