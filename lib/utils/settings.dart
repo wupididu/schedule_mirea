@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+
+/// Данная утилита хранит все настройки.
 class Settings {
   late SharedPreferences prefs;
   Settings._();
@@ -13,6 +15,7 @@ class Settings {
 
   Future<void> get initialized => _complete.future;
 
+  /// Перед использованием необходимо проинициализирвать утилиту
   Future<void> init () async {
     if (_complete.isCompleted) {
       return;
