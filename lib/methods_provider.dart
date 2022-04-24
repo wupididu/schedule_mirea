@@ -9,6 +9,8 @@ import 'controllers/schedule_controller.dart';
 import 'controllers/tasks_controller.dart';
 
 // ignore: subtype_of_sealed_class
+/// Это общий провайдер приложения, который предоставляет контроллеры всех
+/// необходимых модулей, а также контроллеры всех виджетов.
 class MethodsProvider extends ProviderContainer {
   MethodsProvider._();
 

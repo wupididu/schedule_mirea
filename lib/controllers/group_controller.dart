@@ -2,6 +2,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../db/db.dart';
 
+/// Этот контроллер является оберткой надо базой данных
+///
+/// Этот предоставляет два метода: [getGroups] и [deleteGroup]. Так же он сам проверяет проинициализирована ли [DB] и ждет иниццализации
+///
 class GroupController {
   final DB _db;
 

@@ -7,6 +7,11 @@ import '../db/models/task.dart';
 import 'tasks_controller.dart';
 import '../utils/settings.dart';
 
+/// Данный контроллер предоставляет возможность взаимодействовать с оповещениями
+///
+/// Перед началом использования надо проинициализировать [init]
+///
+///
 class NotificationController {
   final TasksController _tasksController;
   final Settings _settings;
@@ -39,6 +44,9 @@ class NotificationController {
     });
   }
 
+  /// Добавляет задачу в список для оповещения
+  ///
+  /// Количество дней, за которое надо оповестить о дедлайне, берется из настроек, как и время оповещения.
   Future<void> addNotificationForTask(Task task) async {
     final notificationDays = await _settings.getDays();
     final timeNotifications = await _settings.getTimeNotification();
