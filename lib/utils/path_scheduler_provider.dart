@@ -3,6 +3,8 @@ import 'package:html/dom.dart';
 import 'package:http/http.dart' as http;
 import 'package:html/parser.dart' as html;
 
+/// Это утилита, которая предоставляет возможность получить ссылку на файл,
+/// от кода группы.
 class PathSchedulerProvider {
   late String _group;
 
@@ -49,6 +51,9 @@ class PathSchedulerProvider {
         year.substring(yearSize - 2, yearSize));
   }
 
+  /// Данный метда предоставляет ссылку на файл в зависимости от [groupCode]
+  ///
+  /// Если ссылка на файл не найдена, то возварщается [null]
   Future<String?> getLink(String groupCode) async {
     _group = groupCode;
     final response =

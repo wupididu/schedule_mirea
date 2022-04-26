@@ -9,6 +9,14 @@ import 'package:schedule_mirea/utils/settings.dart';
 import '../db/models/subject.dart';
 import '../db/models/task.dart';
 
+/// Данный контроллер необходим для того чтобы взаимодейстововать с задчами в
+/// базе данных. Данный контроллер имеет методы для того чтобы изменять и получать
+/// данные, а также стрим для того чтобы получать актуальную информацию в потоке.
+///
+/// Перед началом использования контроллера, надо
+/// проинициализировать его методом [init], передав ему [subjectId] -
+/// это id предмета, который он отслеживает.
+///
 class TasksController {
   final DB _db;
   final Settings _settings;
@@ -17,9 +25,11 @@ class TasksController {
 
   late StreamController<List<Task>> _streamController;
 
+  /// Это поток задач для предмета с [_subjectId]
   Stream<List<Task>> get tasksStream => _streamController.stream;
   int? _subjectId;
 
+  /// Этот метод надо вызвать перед использованием контроллер
   Future<void> init(int subjectId) async {
     _subjectId = subjectId;
     final tasks = await getTasks(subjectId: _subjectId);
@@ -27,11 +37,19 @@ class TasksController {
     _streamController.add(tasks);
   }
 
+  /// Этот метод необходимо вызвать, когда контрллер больше не нужен
   Future<void> dispose() async {
     _streamController.close();
     _subjectId = null;
   }
 
+  /// Метод вызвращает списко задач.
+  ///
+  /// Если не передать [groupCode] то он вернет список задач, основываясь на
+  /// данных из настроек.
+  ///
+  /// Если передать [subjectId], то вернет задачи для определенного предмета.
+  /// Если не передать [subjectId], то он вернет все задачи для определенной группы.
   Future<List<Task>> getTasks({
     String? groupCode,
     int? subjectId,
@@ -63,6 +81,8 @@ class TasksController {
         .toList();
   }
 
+  /// Если не передать [groupCode] то он вернет список задач, основываясь на
+  /// данных из настроек.
   Future<Task> insertTask({
     required String name,
     required DateTime deadline,
@@ -109,13 +129,13 @@ class TasksController {
       stateOfTask: task.stateOfTask,
     );
 
+    await _db.updateTask(dbTask);
+
     final groupCode = await _settings.getGroup();
 
     if (groupCode == null) {
-      throw Exception('Group not exist in the settings');
+      return;
     }
-
-    await _db.updateTask(dbTask);
 
     getTasks(groupCode: groupCode, subjectId: _subjectId)
         .then((value) => _streamController.add(value));
@@ -125,7 +145,7 @@ class TasksController {
     await _db.deleteTask(taskId);
     final groupCode = await _settings.getGroup();
     if (groupCode == null) {
-      throw Exception('Group not exist in the settings');
+      return;
     }
     getTasks(groupCode: groupCode, subjectId: _subjectId)
         .then((value) => _streamController.add(value));

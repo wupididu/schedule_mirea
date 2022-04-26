@@ -1,0 +1,1 @@
+flutter pub global run dhttpd --path doc/api
