@@ -42,13 +42,26 @@ class _GroupSettingsFieldState extends State<GroupSettingsField> {
                 ),
               ),
               const SizedBox(width: 1),
-              Text(
-                widget.state.selectedGroupCode ?? '',
-                style: const TextStyle(
-                  color: kAccentColor,
-                  fontSize: 12,
+              if (widget.state.selectedGroupCode != null)
+                Text(
+                  widget.state.selectedGroupCode!,
+                  style: const TextStyle(
+                    color: kAccentColor,
+                    fontSize: 12,
+                  ),
                 ),
-              ),
+              if (widget.state.selectedGroupCode != null)
+                IconButton(
+                  onPressed: () {
+                    MethodsProvider.get()
+                        .settingsPageController
+                        .updateGroupCode(widget.state.selectedGroupCode!);
+                  },
+                  icon: const Icon(
+                    Icons.update_outlined,
+                    color: kAccentColor,
+                  ),
+                )
             ],
           ),
           if (state.groupCodeChangeMode)
@@ -58,7 +71,9 @@ class _GroupSettingsFieldState extends State<GroupSettingsField> {
                 fontSize: 16,
                 color: kTextColor,
               ),
-              inputFormatters: [Formatter(),],
+              inputFormatters: [
+                Formatter(),
+              ],
               decoration: InputDecoration(
                 errorText: state.groupCodeError,
                 hintText: 'Например: ИВБО-02-19',
@@ -107,7 +122,7 @@ class _GroupSettingsFieldState extends State<GroupSettingsField> {
                       onPressed: () {
                         MethodsProvider.get()
                             .settingsPageController
-                            .updateGroupCode(e);
+                            .getLoadedGroup(e);
                       },
                       child: Text(
                         e,
@@ -132,7 +147,7 @@ class Formatter extends TextInputFormatter {
       TextEditingValue oldValue, TextEditingValue newValue) {
     final result = StringBuffer();
     var text =
-    newValue.text.replaceAll('-', '').replaceAll(' ', '').toUpperCase();
+        newValue.text.replaceAll('-', '').replaceAll(' ', '').toUpperCase();
     if (text.length > 1 && oldValue.text.length > newValue.text.length) {
       text = text.substring(0, text.length);
     }

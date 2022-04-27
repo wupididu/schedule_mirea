@@ -52,6 +52,21 @@ class SettingsPageController {
     _stateHolder.turnOnChangeModeGroupCode();
   }
 
+  Future<void> getLoadedGroup(String groupCode) async {
+    final groups = await _groupController.getGroups();
+
+    if (!groups.contains(groupCode)) {
+      await updateGroupCode(groupCode);
+      return;
+    }
+    final loadedGroups = await _groupController.getGroups();
+
+    _stateHolder.updateGroupCode(groupCode, loadedGroups);
+    _stateHolder.updateErrorGroupCode(null);
+    _settings.setGroup(groupCode);
+    _stateHolder.setLoading(false);
+  }
+
   Future<void> updateGroupCode(String groupCode) async {
     print(groupCode);
     _stateHolder.setLoading(true);
