@@ -24,9 +24,9 @@ class SettingsPageStateHolder extends StateNotifier<SettingsPageState?> {
     );
   }
 
-  void turnOnChangeModeGroupCode() {
+  void turnChangeModeGroupCode(bool value) {
     state = state?.copyWith(
-      groupCodeChangeMode: true,
+      groupCodeChangeMode: value,
     );
   }
 

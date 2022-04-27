@@ -16,7 +16,7 @@ class DayNotificationField extends StatefulWidget {
 class _DayNotificationFieldState extends State<DayNotificationField> {
   SettingsPageState get state => widget.state;
   late final TextEditingController fieldController = TextEditingController();
-  String buttonText = '';
+  String buttonText = 'Отменить';
 
   @override
   void initState() {
@@ -73,6 +73,7 @@ class _DayNotificationFieldState extends State<DayNotificationField> {
                 color: kTextColor,
               ),
               keyboardType: TextInputType.number,
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               decoration: InputDecoration(
                 errorText: state.groupCodeError,
                 hintText: 'Например: 3',
@@ -111,11 +112,10 @@ class _DayNotificationFieldState extends State<DayNotificationField> {
                     .settingsPageController
                     .turnChangeModeDayNotification(true);
               }
+              fieldController.clear();
             },
             child: Text(
-              state.dayOfNotificationChangeMode
-                  ? buttonText
-                  : 'Изменить',
+              state.dayOfNotificationChangeMode ? buttonText : 'Изменить',
               textAlign: TextAlign.center,
             ),
           ),

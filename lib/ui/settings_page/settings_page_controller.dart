@@ -49,8 +49,8 @@ class SettingsPageController {
     _stateHolder.clear();
   }
 
-  void turnOnChangeModeGroupCode() {
-    _stateHolder.turnOnChangeModeGroupCode();
+  void turnChangeModeGroupCode(bool value) {
+    _stateHolder.turnChangeModeGroupCode(value);
   }
 
   Future<void> getLoadedGroup(String groupCode) async {

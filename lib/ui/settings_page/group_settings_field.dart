@@ -17,6 +17,23 @@ class _GroupSettingsFieldState extends State<GroupSettingsField> {
   SettingsPageState get state => widget.state;
   late final TextEditingController groupFieldController =
       TextEditingController();
+  String buttonText = 'Отменить';
+
+  @override
+  void initState() {
+    super.initState();
+    groupFieldController.addListener(() {
+      if (groupFieldController.text.isEmpty) {
+        setState(() {
+          buttonText = 'Отменить';
+        });
+      } else {
+        setState(() {
+          buttonText = 'Сохранить изменения';
+        });
+      }
+    });
+  }
 
   @override
   void dispose() {
@@ -97,6 +114,12 @@ class _GroupSettingsFieldState extends State<GroupSettingsField> {
                 )),
             onPressed: () {
               if (state.groupCodeChangeMode) {
+                if (groupFieldController.text.isEmpty) {
+                  MethodsProvider.get()
+                      .settingsPageController
+                      .turnChangeModeGroupCode(false);
+                  return;
+                }
                 final groupCode = groupFieldController.value.text;
                 MethodsProvider.get()
                     .settingsPageController
@@ -104,11 +127,12 @@ class _GroupSettingsFieldState extends State<GroupSettingsField> {
               } else {
                 MethodsProvider.get()
                     .settingsPageController
-                    .turnOnChangeModeGroupCode();
+                    .turnChangeModeGroupCode(true);
               }
+              groupFieldController.clear();
             },
             child: Text(
-              state.groupCodeChangeMode ? 'Загрузить расписание' : 'Изменить',
+              state.groupCodeChangeMode ? buttonText : 'Изменить',
               textAlign: TextAlign.center,
             ),
           ),
