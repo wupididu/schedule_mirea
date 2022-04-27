@@ -20,9 +20,6 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     MethodsProvider.get().db.init();
     MethodsProvider.get().settings.init();
-    MethodsProvider.get().settings.setGroup('ИВБО-02-19');
-    MethodsProvider.get().pathSchedulerProviderController.getLink('ИВБО-02-19');
-    MethodsProvider.get().scheduleController.addScheduleOnWeek();
   }
 
   @override
