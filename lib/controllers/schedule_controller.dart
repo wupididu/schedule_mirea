@@ -11,6 +11,7 @@ import '../../utils/schedule_converter.dart';
 import '../db/models/subject.dart';
 import '../utils/settings.dart';
 
+/// Контроллер, который предоставляет взаимодействие с расписанием
 class ScheduleController {
   final DB _db;
   final ScheduleConverter _scheduleConverter;
@@ -26,6 +27,7 @@ class ScheduleController {
     this._settings,
   );
 
+  /// Добавляет расписание для группы, которая берется из настроек
   Future<void> addScheduleOnWeek({
     String? groupCode,
     String? urlLink,
