@@ -16,9 +16,10 @@ class NotificationController {
   final TasksController _tasksController;
   final Settings _settings;
   NotificationController(this._tasksController, this._settings);
+  List<StreamSubscription> _subscription = [];
 
   Future<void> init() async {
-    AwesomeNotifications().initialize(
+    await AwesomeNotifications().initialize(
       null,
       [
         NotificationChannel(
@@ -37,11 +38,26 @@ class NotificationController {
       debug: true,
     );
 
-    AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
+    await AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
       if (!isAllowed) {
         AwesomeNotifications().requestPermissionToSendNotifications();
       }
     });
+
+    _subscription
+      ..add(_settings.stream.listen((event) {
+        updateNotifications();
+      }))
+      ..add(_tasksController.allTaskStream.listen((event) {
+        updateNotifications();
+      }));
+  }
+
+  Future<void> dispose() async {
+    for (var element in _subscription) {
+      element.cancel();
+    }
+    _subscription = [];
   }
 
   /// Добавляет задачу в список для оповещения
@@ -55,21 +71,17 @@ class NotificationController {
     late final String title;
     late final String body;
     final subject = await _tasksController.getSubjectByTask(task.id);
-    if (task.deadline.day - DateTime.now().day >= notificationDays) {
-      time = task.deadline.add(Duration(days: -notificationDays));
-      title = "Приближается дедлайн по задаче ${task.name}";
-      body = "До дедлайна дней: $notificationDays. "
-          "Задача: ${task.name}. "
-          "Предмет: ${subject.name}. "
-          "Время: ${task.deadline.hour}:${task.deadline.minute}";
+    final differenceDays = task.deadline.difference(DateTime.now()).inDays;
+    if (differenceDays >= notificationDays) {
+      time = task.deadline.subtract(Duration(days: notificationDays));
     } else {
       time = task.deadline.add(const Duration(days: -1));
-      title = "Завтра дедлайн по задаче ${task.name}";
-      body = "До дедлайна дней: 1. "
-          "Задача: ${task.name}. "
-          "Предмет: ${subject.name} "
-          "Время: ${task.deadline.hour}:${task.deadline.minute}";
     }
+
+    title = "Приближается дедлайн по задаче ${task.name}";
+    body = "До дедлайна дней: $differenceDays."
+        "Задача: ${task.name}. "
+        "Предмет: ${subject.name}. ";
 
     _scheduleNotification(
       id: task.id,
@@ -86,7 +98,7 @@ class NotificationController {
 
   /// Если не передать код группы, то он возьмется из настроек
   Future<void> updateNotifications([String? groupCode]) async {
-    final code = groupCode ??  await _settings.getGroup();
+    final code = groupCode ?? await _settings.getGroup();
     if (code == null) {
       throw Exception("Grope code not exist in the settings");
     }
