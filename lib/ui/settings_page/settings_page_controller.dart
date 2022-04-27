@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:schedule_mirea/controllers/group_controller.dart';
 import 'package:schedule_mirea/controllers/schedule_controller.dart';
@@ -110,6 +111,11 @@ class SettingsPageController {
 
   void turnChangeModeDayNotification(bool value) {
     _stateHolder.turnOnChangeModeDayNotification(value);
+  }
+
+  Future<void> updateTimeNotification(TimeOfDay time) async {
+    await _settings.setTimeNotification(time);
+    _stateHolder.updateTimeNotification(time);
   }
 }
 

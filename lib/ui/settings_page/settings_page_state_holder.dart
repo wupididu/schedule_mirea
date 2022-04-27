@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:schedule_mirea/ui/settings_page/settings_page_state.dart';
 
@@ -50,6 +51,12 @@ class SettingsPageStateHolder extends StateNotifier<SettingsPageState?> {
   void turnOnChangeModeDayNotification (bool value) {
     state = state?.copyWith(
       dayOfNotificationChangeMode: value,
+    );
+  }
+
+  void updateTimeNotification (TimeOfDay time) {
+    state = state?.copyWith(
+      selectedTimeOfNotification: time,
     );
   }
 }

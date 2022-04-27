@@ -5,6 +5,7 @@ import 'package:schedule_mirea/ui/settings_page/group_settings_field.dart';
 
 import '../consts.dart';
 import 'settings_page_state.dart';
+import 'time_notification_field.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -55,6 +56,8 @@ class _SettingsPageState extends State<SettingsPage> {
             GroupSettingsField(state: snapshot.data!),
             const SizedBox(height: 24),
             DayNotificationField(state: snapshot.data!),
+            const SizedBox(height: 24),
+            TimeNotificationField(state: snapshot.data!),
           ]);
         },
       ),
