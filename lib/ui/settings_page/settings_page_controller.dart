@@ -102,6 +102,15 @@ class SettingsPageController {
     _settings.setGroup(groupCode);
     _stateHolder.setLoading(false);
   }
+
+  Future<void> updateDayNotification(int day) async {
+    await _settings.setDaysDeadline(day);
+    _stateHolder.setDayNotification(day);
+  }
+
+  void turnChangeModeDayNotification(bool value) {
+    _stateHolder.turnOnChangeModeDayNotification(value);
+  }
 }
 
 final settingsPageControllerProvider = Provider((ref) => SettingsPageController(

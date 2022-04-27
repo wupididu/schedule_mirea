@@ -39,6 +39,19 @@ class SettingsPageStateHolder extends StateNotifier<SettingsPageState?> {
   void clear() {
     state = null;
   }
+
+  void setDayNotification(int day) {
+    state = state?.copyWith(
+      selectedDayOfNotification: day,
+      dayOfNotificationChangeMode: false,
+    );
+  }
+
+  void turnOnChangeModeDayNotification (bool value) {
+    state = state?.copyWith(
+      dayOfNotificationChangeMode: value,
+    );
+  }
 }
 
 final settingsPageStateHolder = Provider((ref) => SettingsPageStateHolder());

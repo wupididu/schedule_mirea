@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:schedule_mirea/methods_provider.dart';
+import 'package:schedule_mirea/ui/settings_page/day_notification_field.dart';
 import 'package:schedule_mirea/ui/settings_page/group_settings_field.dart';
 
 import '../consts.dart';
@@ -13,7 +14,6 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-
   @override
   void initState() {
     super.initState();
@@ -51,8 +51,11 @@ class _SettingsPageState extends State<SettingsPage> {
               child: CircularProgressIndicator(),
             );
           }
-          return ListView(
-              children: [GroupSettingsField(state: snapshot.data!)]);
+          return ListView(children: [
+            GroupSettingsField(state: snapshot.data!),
+            const SizedBox(height: 24),
+            DayNotificationField(state: snapshot.data!),
+          ]);
         },
       ),
     );
