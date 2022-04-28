@@ -20,6 +20,13 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     MethodsProvider.get().db.init();
     MethodsProvider.get().settings.init();
+    MethodsProvider.get().notificationController.init();
+  }
+
+  @override
+  void dispose() {
+    MethodsProvider.get().notificationController.dispose();
+    super.dispose();
   }
 
   @override

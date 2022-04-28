@@ -1,5 +1,4 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:schedule_mirea/models/subject_from_table.dart';
 import 'package:schedule_mirea/models/subjects_on_day.dart';
 
 part 'even_day.freezed.dart';
