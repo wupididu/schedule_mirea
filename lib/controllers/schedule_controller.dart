@@ -1,5 +1,4 @@
 import 'package:riverpod/riverpod.dart';
-import 'package:schedule_mirea/exceptions/exceptions.dart';
 import 'package:schedule_mirea/utils/path_scheduler_provider.dart';
 import 'package:schedule_mirea/utils/schedule_file_installer.dart';
 import '../db/db.dart';
@@ -29,28 +28,33 @@ class ScheduleController {
   );
 
   /// Добавляет расписание для группы, которая берется из настроек
-  Future<void> addScheduleOnWeek() async {
+  Future<void> addScheduleOnWeek({
+    String? groupCode,
+    String? urlLink,
+  }) async {
     await _db.initialized;
 
-    final groupCode = await _settings.getGroup();
+    final _groupCode = groupCode ?? await _settings.getGroup();
 
-    if (groupCode == null) {
+    if (_groupCode == null) {
       throw Exception('Какие то проблемы, в настройках не лежит код группы');
     }
 
-    final link = await _pathSchedulerProvider.getLink(groupCode);
+    final link = urlLink ?? await _pathSchedulerProvider.getLink(_groupCode);
     if (link == null) {
       return;
     }
     await _scheduleFileInstaller.downloadFile(link);
 
-    await _db.insertGroup(DBGroups(groupCode: groupCode));
+    await _db.insertGroup(DBGroups(groupCode: _groupCode));
+
+    await _db.deleteUselessSchedule(_groupCode);
 
     _scheduleConverter.setFile(await _scheduleFileInstaller.scheduleFilePath);
 
-    final scheduleOnWeek = _scheduleConverter.getSubjectsOnWeek(groupCode);
+    final scheduleOnWeek = _scheduleConverter.getSubjectsOnWeek(_groupCode);
 
-    final allSubjects = _scheduleConverter.getAllSubjects(groupCode);
+    final allSubjects = _scheduleConverter.getAllSubjects(_groupCode);
 
     for (var element in allSubjects) {
       final subject = DBSubject(
@@ -65,32 +69,32 @@ class ScheduleController {
     await _addWeekDay(
       dayOfWeek: DayOfWeek.monday,
       evenDay: scheduleOnWeek.monday,
-      groupCode: groupCode,
+      groupCode: _groupCode,
     );
     await _addWeekDay(
       dayOfWeek: DayOfWeek.tuesday,
       evenDay: scheduleOnWeek.tuesday,
-      groupCode: groupCode,
+      groupCode: _groupCode,
     );
     await _addWeekDay(
       dayOfWeek: DayOfWeek.thursday,
       evenDay: scheduleOnWeek.thursday,
-      groupCode: groupCode,
+      groupCode: _groupCode,
     );
     await _addWeekDay(
       dayOfWeek: DayOfWeek.wednesday,
       evenDay: scheduleOnWeek.wednesday,
-      groupCode: groupCode,
+      groupCode: _groupCode,
     );
     await _addWeekDay(
       dayOfWeek: DayOfWeek.friday,
       evenDay: scheduleOnWeek.friday,
-      groupCode: groupCode,
+      groupCode: _groupCode,
     );
     await _addWeekDay(
       dayOfWeek: DayOfWeek.saturday,
       evenDay: scheduleOnWeek.saturday,
-      groupCode: groupCode,
+      groupCode: _groupCode,
     );
   }
 
@@ -127,8 +131,8 @@ class ScheduleController {
 
     final code = groupCode ?? await _settings.getGroup();
 
-    if (code == null){
-      throw GroupCodeNullException();
+    if (code == null) {
+      return [];
     }
 
     final subjects = await _db.getSubjects(code);

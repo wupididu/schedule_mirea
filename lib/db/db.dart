@@ -92,6 +92,7 @@ class DB {
 
     await _deleteUselessSubject();
     await _deleteUselessTask();
+    await deleteUselessSchedule(groupCode);
   }
 
   Future<List<DBGroups>> getGroups() async {
@@ -235,7 +236,6 @@ class DB {
     return resTask.map((e) => DBTask.fromMap(e)).toList();
   }
 
-
   Future<void> deleteTask(int taskId) async {
     final removedTaskId = await _db.delete(
       DBTask.tableName,
@@ -271,7 +271,7 @@ class DB {
       s.${DBSubject.columnId} = g.${DBGroupXTask.columnSubjectId}
     ''';
     final result = await _db.rawQuery(query);
-    if (result.isEmpty){
+    if (result.isEmpty) {
       throw Exception('task not have subject');
     }
     return DBSubject.fromMap(result.first);
@@ -397,6 +397,12 @@ class DB {
   Future<List<DBTask>> _getTasks() async {
     final resTask = await _db.query(DBTask.tableName);
     return resTask.map((e) => DBTask.fromMap(e)).toList();
+  }
+
+  Future<void> deleteUselessSchedule(String groupCode) async {
+    final groupId = await _findGroupId(groupCode);
+    await _db.delete(DBSchedule.tableName,
+        where: '${DBSchedule.columnGroupId} = ?', whereArgs: [groupId]);
   }
 }
 

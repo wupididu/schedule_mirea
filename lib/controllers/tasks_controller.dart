@@ -24,10 +24,13 @@ class TasksController {
   TasksController(this._db, this._settings);
 
   late StreamController<List<Task>> _streamController;
+  final StreamController<List<Task>> _allTaskStreamController = StreamController<List<Task>>();
 
   /// Это поток задач для предмета с [_subjectId]
   Stream<List<Task>> get tasksStream => _streamController.stream;
   int? _subjectId;
+
+  Stream<List<Task>> get allTaskStream => _allTaskStreamController.stream;
 
   /// Этот метод надо вызвать перед использованием контроллер
   Future<void> init(int subjectId) async {
@@ -108,8 +111,7 @@ class TasksController {
       subjectId: subjectId,
     );
 
-    getTasks(groupCode: groupCode, subjectId: _subjectId)
-        .then((value) => _streamController.add(value));
+    _updateStreamTask();
 
     return Task(
       id: id,
@@ -131,14 +133,7 @@ class TasksController {
 
     await _db.updateTask(dbTask);
 
-    final groupCode = await _settings.getGroup();
-
-    if (groupCode == null) {
-      return;
-    }
-
-    getTasks(groupCode: groupCode, subjectId: _subjectId)
-        .then((value) => _streamController.add(value));
+    _updateStreamTask();
   }
 
   Future<void> deleteTask(int taskId) async {
@@ -147,8 +142,7 @@ class TasksController {
     if (groupCode == null) {
       return;
     }
-    getTasks(groupCode: groupCode, subjectId: _subjectId)
-        .then((value) => _streamController.add(value));
+    _updateStreamTask();
   }
 
   Future<Subject> getSubjectByTask(int taskId) async {
@@ -161,7 +155,12 @@ class TasksController {
         teacher: subject.teacher);
   }
 
-  Future<void> updateStreamTask() async {}
+  Future<void> _updateStreamTask() async {
+    getTasks(subjectId: _subjectId)
+        .then((value) => _streamController.add(value));
+    final allTasks = await getTasks();
+    _allTaskStreamController.add(allTasks);
+  }
 }
 
 final tasksControllerProvider = Provider((ref) => TasksController(

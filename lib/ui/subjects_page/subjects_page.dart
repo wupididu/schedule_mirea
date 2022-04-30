@@ -30,8 +30,11 @@ class _SubjectsPageState extends State<SubjectsPage> {
   @override
   Widget build(BuildContext context) {
     final mapSubject = <String, Map<TypeOfSubject, int>>{};
-    final subjects =
-        _subjects.where((element) => !element.name.contains('...'));
+    final subjects = _subjects.map((e) {
+      final reg = RegExp(r'[0-9].*\..|кр.');
+      final name = e.name.replaceAll(reg, '');
+      return e.copyWith(name: name);
+    }).where((element) => !element.name.contains('.'));
     for (var element in subjects) {
       if (mapSubject.keys.contains(element.name)) {
         mapSubject[element.name]?.addAll({element.type: element.id});
