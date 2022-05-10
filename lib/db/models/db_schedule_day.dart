@@ -46,4 +46,5 @@ enum DayOfWeek {
   thursday,
   friday,
   saturday,
+  sunday,
 }
