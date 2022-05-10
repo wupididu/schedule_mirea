@@ -3,6 +3,7 @@ import 'package:schedule_mirea/ui/consts.dart';
 
 import '../../db/models/subject.dart';
 import '../../models/subject_from_table.dart';
+import '../tasks_page/tasks_page.dart';
 
 class SubjectItemWidget extends StatelessWidget {
   final Subject? subject;
@@ -33,7 +34,6 @@ class SubjectItemWidget extends StatelessWidget {
               ),
               Expanded(
                 child: Container(
-                  // height: 80,
                   decoration: BoxDecoration(
                       color: _itemColor,
                       borderRadius: BorderRadius.circular(10)),
@@ -49,36 +49,44 @@ class SubjectItemWidget extends StatelessWidget {
                               ),
                             ),
                           )
-                        : Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                subject!.name,
-                                style: _titleTextStyle,
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    subject!.teacher,
-                                    style: _smallTextStyle,
-                                  ),
-                                  Text(
-                                    _typeOfSubject,
-                                    style: _smallTextStyle,
-                                  ),
-                                  Text(
-                                    subject!.room,
-                                    style: _smallTextStyle,
-                                  ),
-                                ],
-                              )
-                            ],
+                        : InkWell(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => TasksPage(
+                                      name: subject!.name,
+                                      subjectId: subject!.id)));
+                            },
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  subject!.name,
+                                  style: _titleTextStyle,
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      subject!.teacher,
+                                      style: _smallTextStyle,
+                                    ),
+                                    Text(
+                                      _typeOfSubject,
+                                      style: _smallTextStyle,
+                                    ),
+                                    Text(
+                                      subject!.room,
+                                      style: _smallTextStyle,
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
                           ),
                   ),
                 ),
