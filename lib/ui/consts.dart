@@ -16,3 +16,31 @@ final kTheme = ThemeData.light().copyWith(
   scaffoldBackgroundColor: kBackgroundColor,
   backgroundColor: kBackgroundColor,
 );
+
+
+const kPairTimeMap = {
+  0: {
+    'start': TimeOfDay(hour: 9, minute: 0),
+    'end': TimeOfDay(hour: 10, minute: 30),
+  },
+  1: {
+    'start': TimeOfDay(hour: 10, minute: 40),
+    'end': TimeOfDay(hour: 12, minute: 10),
+  },
+  2: {
+    'start': TimeOfDay(hour: 13, minute: 0),
+    'end': TimeOfDay(hour: 14, minute: 30),
+  },
+  3: {
+    'start': TimeOfDay(hour: 14, minute: 40),
+    'end': TimeOfDay(hour: 16, minute: 10),
+  },
+  4: {
+    'start': TimeOfDay(hour: 16, minute: 20),
+    'end': TimeOfDay(hour: 17, minute: 50),
+  },
+  5: {
+    'start': TimeOfDay(hour: 18, minute: 0),
+    'end': TimeOfDay(hour: 19, minute: 30),
+  },
+};

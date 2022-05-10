@@ -70,16 +70,19 @@ class NotificationController {
     late final DateTime time;
     late final String title;
     late final String body;
+    late final int deadlineDays;
     final subject = await _tasksController.getSubjectByTask(task.id);
     final differenceDays = task.deadline.difference(DateTime.now()).inDays;
     if (differenceDays >= notificationDays) {
       time = task.deadline.subtract(Duration(days: notificationDays));
+      deadlineDays = notificationDays;
     } else {
       time = task.deadline.add(const Duration(days: -1));
+      deadlineDays = 1;
     }
 
     title = "Приближается дедлайн по задаче ${task.name}";
-    body = "До дедлайна дней: $differenceDays."
+    body = "До дедлайна дней: $deadlineDays."
         "Задача: ${task.name}. "
         "Предмет: ${subject.name}. ";
 
