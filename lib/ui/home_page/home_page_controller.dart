@@ -91,9 +91,9 @@ class HomePageController {
       case (2):
         return DayOfWeek.tuesday;
       case (3):
-        return DayOfWeek.thursday;
-      case (4):
         return DayOfWeek.wednesday;
+      case (4):
+        return DayOfWeek.thursday;
       case (5):
         return DayOfWeek.friday;
       case (6):
