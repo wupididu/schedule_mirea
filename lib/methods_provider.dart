@@ -5,6 +5,8 @@ import 'package:schedule_mirea/ui/calendar_page/calendar_page_controller.dart';
 import 'package:schedule_mirea/ui/calendar_page/calendar_page_state_holder.dart';
 import 'package:schedule_mirea/ui/home_page/home_page_controller.dart';
 import 'package:schedule_mirea/ui/home_page/home_page_state_holder.dart';
+import 'package:schedule_mirea/ui/notification_page/notification_page_controller.dart';
+import 'package:schedule_mirea/ui/notification_page/notification_page_state_holder.dart';
 import 'package:schedule_mirea/ui/settings_page/settings_page_controller.dart';
 import 'package:schedule_mirea/ui/settings_page/settings_page_state_holder.dart';
 import 'package:schedule_mirea/ui/task_editor/task_editor_controller.dart';
@@ -58,4 +60,10 @@ class MethodsProvider extends ProviderContainer {
 
   CalendarPageStateHolder get calendarPageSateHolder =>
       read(calendarPageStateHolderProvider);
+
+  NotificationPageController get notificationPageController =>
+      read(notificationPageControllerProvider);
+
+  NotificationPageStateHolder get notificationPageStateHolder =>
+      read(notificationPageStateHolderProvider);
 }
