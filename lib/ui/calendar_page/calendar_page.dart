@@ -104,15 +104,27 @@ class _CalendarPageState extends State<CalendarPage> {
                   ),
                 ),
                 Expanded(
-                    child: ListView(
-                  children: snapshot.data?.listOfTasks
-                          .map((e) => SubjectTaskItem(subjectTask: e))
-                          .toList() ??
-                      [],
-                ))
+                  child: _getListOfItems(snapshot.data),
+                )
               ],
             ),
           );
         });
   }
+
+  Widget _getListOfItems(CalendarPageState? state) {
+    if (state == null) {
+      return Center(
+        child: _placeHolder,
+      );
+    }
+
+    final widgets =
+        state.listOfTasks.map((e) => SubjectTaskItem(subjectTask: e)).toList();
+
+    return widgets.isEmpty ? _placeHolder : ListView(children: widgets);
+  }
+
+  Widget get _placeHolder =>
+      const Center(child: Text('EMPTY', style: TextStyle(color: kAccentColor)));
 }
