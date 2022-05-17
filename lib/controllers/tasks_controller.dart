@@ -23,11 +23,11 @@ class TasksController {
 
   TasksController(this._db, this._settings);
 
-  late StreamController<List<Task>> _streamController;
-  final StreamController<List<Task>> _allTaskStreamController = StreamController<List<Task>>();
+  StreamController<List<Task>>? _streamController;
+  final StreamController<List<Task>> _allTaskStreamController = StreamController<List<Task>>.broadcast();
 
   /// Это поток задач для предмета с [_subjectId]
-  Stream<List<Task>> get tasksStream => _streamController.stream;
+  Stream<List<Task>> get tasksStream => _streamController!.stream;
   int? _subjectId;
 
   Stream<List<Task>> get allTaskStream => _allTaskStreamController.stream;
@@ -37,12 +37,13 @@ class TasksController {
     _subjectId = subjectId;
     final tasks = await getTasks(subjectId: _subjectId);
     _streamController = StreamController();
-    _streamController.add(tasks);
+    _streamController?.add(tasks);
   }
 
   /// Этот метод необходимо вызвать, когда контрллер больше не нужен
   Future<void> dispose() async {
-    _streamController.close();
+    _streamController?.close();
+    _streamController = null;
     _subjectId = null;
   }
 
@@ -82,6 +83,26 @@ class TasksController {
               stateOfTask: e.stateOfTask,
             ))
         .toList();
+  }
+
+  Future<List<Task>> getTasksByDateTime(DateTime dateTime) async {
+    await _db.initialized;
+
+    final _groupCode = await _settings.getGroup();
+
+    if (_groupCode == null) {
+      throw Exception('Group not exist in the settings');
+    }
+
+    final tasks = await _db.getTasksByDateTime(_groupCode, dateTime);
+
+    return tasks.map((e) => Task(
+      id: e.id!,
+      name: e.name,
+      deadline: e.deadline,
+      description: e.description,
+      stateOfTask: e.stateOfTask,
+    )).toList();
   }
 
   /// Если не передать [groupCode] то он вернет список задач, основываясь на
@@ -157,7 +178,7 @@ class TasksController {
 
   Future<void> _updateStreamTask() async {
     getTasks(subjectId: _subjectId)
-        .then((value) => _streamController.add(value));
+        .then((value) => _streamController?.add(value));
     final allTasks = await getTasks();
     _allTaskStreamController.add(allTasks);
   }

@@ -174,13 +174,15 @@ class _TaskEditorPageState extends State<TaskEditorPage> {
       ];
 
   void _onPressCalendarButton() {
+    final now = DateTime.now();
+    final deadline = MethodsProvider.get().taskEditorController.deadline ?? now;
+
     showDatePicker(
       context: context,
-      initialDate:
-          MethodsProvider.get().taskEditorController.deadline ?? DateTime.now(),
-      firstDate: DateTime.now(),
-      lastDate: DateTime(DateTime.now().year + 1),
-      currentDate: MethodsProvider.get().taskEditorController.deadline,
+      initialDate: now.compareTo(deadline) == -1 ? deadline : now,
+      firstDate: now,
+      lastDate: DateTime(now.year + 1),
+      currentDate: deadline,
       builder: (context, child) => Theme(
         data: ThemeData(
           colorScheme: const ColorScheme.light().copyWith(
