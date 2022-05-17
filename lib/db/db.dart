@@ -246,7 +246,6 @@ class DB {
       and t.${DBTask.columnDeadline} = '${dateTime.toString().replaceAll('Z', '')}'
     ''';
     final resTasks = await _db.rawQuery(query);
-    print(resTasks.toString());
     return resTasks.map(DBTask.fromMap).toList();
   }
 
