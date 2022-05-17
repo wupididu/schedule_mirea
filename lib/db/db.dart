@@ -12,7 +12,6 @@ import 'models/db_groups.dart';
 import 'models/db_subject.dart';
 import 'models/db_task.dart';
 
-
 /// Этот класс предоставляет взаимодействие с локальной базой данных
 ///
 /// Для того чтобы начать пользоваться данным классом, надо его проинициализировать, вызвать метод [init()]
@@ -234,6 +233,21 @@ class DB {
     ''';
     final resTask = await _db.rawQuery(query);
     return resTask.map((e) => DBTask.fromMap(e)).toList();
+  }
+
+  Future<List<DBTask>> getTasksByDateTime(
+      String groupCode, DateTime dateTime) async {
+    final groupId = await _findGroupId(groupCode);
+    final query = '''
+      select t.* from ${DBTask.tableName} t 
+      inner join ${DBGroupXTask.tableName} g
+      on g.${DBGroupXTask.columnGroupId} = $groupId
+      and t.${DBTask.columnId} = g.${DBGroupXTask.columnTaskId}
+      and t.${DBTask.columnDeadline} = '${dateTime.toString().replaceAll('Z', '')}'
+    ''';
+    final resTasks = await _db.rawQuery(query);
+    print(resTasks.toString());
+    return resTasks.map(DBTask.fromMap).toList();
   }
 
   Future<void> deleteTask(int taskId) async {
