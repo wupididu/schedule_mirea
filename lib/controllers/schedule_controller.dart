@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:schedule_mirea/utils/path_scheduler_provider.dart';
 import 'package:schedule_mirea/utils/schedule_file_installer.dart';
@@ -9,6 +10,7 @@ import '../../models/even_day.dart';
 import '../../models/subject_from_table.dart';
 import '../../utils/schedule_converter.dart';
 import '../db/models/subject.dart';
+import '../models/subjects_on_week.dart';
 import '../utils/settings.dart';
 
 /// Контроллер, который предоставляет взаимодействие с расписанием
@@ -52,9 +54,11 @@ class ScheduleController {
 
     _scheduleConverter.setFile(await _scheduleFileInstaller.scheduleFilePath);
 
-    final scheduleOnWeek = _scheduleConverter.getSubjectsOnWeek(_groupCode);
+    final scheduleOnWeek =
+        await compute(_getSubjectOnWeekWorker,{'code': _groupCode, 'converter': _scheduleConverter});
 
-    final allSubjects = _scheduleConverter.getAllSubjects(_groupCode);
+    final allSubjects =
+        await compute(_getAllSubjectsWorker,{'code': _groupCode, 'converter': _scheduleConverter});
 
     for (var element in allSubjects) {
       final subject = DBSubject(
@@ -145,6 +149,18 @@ class ScheduleController {
               type: e.type,
             ))
         .toList();
+  }
+
+  SubjectsOnWeek _getSubjectOnWeekWorker(Map<String, dynamic> params) {
+    final groupCode = params['code'];
+    final converter = params['converter'] as ScheduleConverter;
+    return converter.getSubjectsOnWeek(groupCode);
+  }
+  
+  List<SubjectFromTable> _getAllSubjectsWorker(Map<String, dynamic> params) {
+    final groupCode = params['code'];
+    final converter = params['converter'] as ScheduleConverter;
+    return converter.getAllSubjects(groupCode);
   }
 
   Future<void> _addWeekDay({

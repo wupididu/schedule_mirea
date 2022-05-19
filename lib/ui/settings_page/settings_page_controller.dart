@@ -69,7 +69,6 @@ class SettingsPageController {
   }
 
   Future<void> updateGroupCode(String groupCode) async {
-    print(groupCode);
     _stateHolder.setLoading(true);
 
     if (!RegExp(r'[А-Яа-я]{4}-[0-9]{2}-[0-9]{2}').hasMatch(groupCode)) {
@@ -82,19 +81,24 @@ class SettingsPageController {
     try {
       link = await _pathSchedulerProvider.getLink(groupCode.toUpperCase());
     } catch (e) {
-      _stateHolder.updateErrorGroupCode('Что то пошло не так :(');
+      _stateHolder.updateErrorGroupCode('Что то пошло не так c сетью:(');
       return;
     }
 
     if (link == null) {
-      _stateHolder.updateErrorGroupCode('Что то пошло не так :(');
+      _stateHolder.updateErrorGroupCode('Мы не поддерживаем такую группу:(');
       return;
     }
 
-    await _scheduleController.addScheduleOnWeek(
-      groupCode: groupCode,
-      urlLink: link,
-    );
+    try {
+      await _scheduleController.addScheduleOnWeek(
+        groupCode: groupCode,
+        urlLink: link,
+      );
+    } catch(e) {
+      _stateHolder.updateErrorGroupCode('Что то пошло не так :(');
+    }
+
 
     final loadedGroups = await _groupController.getGroups();
 
@@ -102,6 +106,19 @@ class SettingsPageController {
     _stateHolder.updateErrorGroupCode(null);
     _settings.setGroup(groupCode);
     _stateHolder.setLoading(false);
+  }
+
+  Future<void> deleteGroup(String groupCode) async {
+    await _groupController.deleteGroup(groupCode);
+
+    final loadedGroups = await _groupController.getGroups();
+
+    if (groupCode == _stateHolder.state?.selectedGroupCode) {
+      _stateHolder.updateGroupCode(null, loadedGroups);
+      _settings.setGroup(null);
+    } else {
+      _stateHolder.updateLoadedGroups(loadedGroups);
+    }
   }
 
   Future<void> updateDayNotification(int day) async {

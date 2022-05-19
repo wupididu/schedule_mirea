@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:schedule_mirea/ui/settings_page/settings_page_state.dart';
 
@@ -148,9 +149,25 @@ class _GroupSettingsFieldState extends State<GroupSettingsField> {
                             .settingsPageController
                             .getLoadedGroup(e);
                       },
-                      child: Text(
-                        e,
-                        style: const TextStyle(color: kAccentColor),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Center(
+                              child: Text(
+                                e,
+                                style: const TextStyle(color: kAccentColor),
+                              ),
+                            ),
+                          ),
+                          IconButton(
+                              onPressed: () {
+                                _showDeleteDialog(e);
+                              },
+                              icon: const Icon(
+                                Icons.delete_outline,
+                                color: kTextColor,
+                              ))
+                        ],
                       ),
                     ),
                   )
@@ -161,6 +178,35 @@ class _GroupSettingsFieldState extends State<GroupSettingsField> {
       ),
     );
   }
+
+  void _showDeleteDialog(String groupCode) => showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+            title: const Text(
+              'Вы действительно хотите удалить группу? Это сотрет все связанные с ним данные!!!',
+              style: TextStyle(color: kTextColor),
+            ),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    MethodsProvider.get().settingsPageController.deleteGroup(groupCode);
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text(
+                    'Да',
+                    style: TextStyle(color: kAccentColor),
+                  )),
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text(
+                    'Нет',
+                    style: TextStyle(color: kAccentColor),
+                  ))
+            ],
+            actionsAlignment: MainAxisAlignment.spaceAround,
+          ));
 }
 
 class Formatter extends TextInputFormatter {

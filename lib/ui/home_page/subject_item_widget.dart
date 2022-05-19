@@ -54,7 +54,9 @@ class SubjectItemWidget extends StatelessWidget {
                               Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) => TasksPage(
                                       name: subject!.name,
-                                      subjectId: subject!.id)));
+                                      subjectId: subject!.id,
+                                      typeOfSubject: subject!.type,
+                                  )));
                             },
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -71,17 +73,29 @@ class SubjectItemWidget extends StatelessWidget {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text(
-                                      subject!.teacher,
-                                      style: _smallTextStyle,
+                                    Expanded(
+                                      child: Center(
+                                        child: Text(
+                                          subject!.teacher,
+                                          style: _smallTextStyle,
+                                        ),
+                                      ),
                                     ),
-                                    Text(
-                                      _typeOfSubject,
-                                      style: _smallTextStyle,
+                                    Expanded(
+                                      child: Center(
+                                        child: Text(
+                                          _typeOfSubject,
+                                          style: _smallTextStyle,
+                                        ),
+                                      ),
                                     ),
-                                    Text(
-                                      subject!.room,
-                                      style: _smallTextStyle,
+                                    Expanded(
+                                      child: Center(
+                                        child: Text(
+                                          subject!.room,
+                                          style: _smallTextStyle,
+                                        ),
+                                      ),
                                     ),
                                   ],
                                 )

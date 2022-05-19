@@ -75,13 +75,13 @@ class ScheduleConverter {
     }
 
     final String name = data.value ?? '';
-    final String type = _sheet.rows[rowIndex][colIndex + 1]?.value ?? '';
+    final String type = _sheet.rows[rowIndex][colIndex + 1]?.value.toString().toLowerCase() ?? '';
     late final TypeOfSubject typeOfSubject;
-    if (type == 'пр') {
+    if (type.contains('пр')) {
       typeOfSubject = TypeOfSubject.prac;
-    } else if (type == 'лаб') {
+    } else if (type.contains('лаб')) {
       typeOfSubject = TypeOfSubject.lab;
-    } else if (type == 'лк') {
+    } else if (type.contains('лк')) {
       typeOfSubject = TypeOfSubject.lek;
     } else {
       typeOfSubject = TypeOfSubject.none;
@@ -98,8 +98,7 @@ class ScheduleConverter {
   }
 
   int _getCol(String group) {
-    print(group);
-    final col = _sheet.rows[1].indexWhere((element) => element?.value == group);
+    final col = _sheet.rows[1].indexWhere((element) => element?.value.toString().contains(group) ?? false);
 
     if (col == -1) {
       // TODO создать норм эксепшн

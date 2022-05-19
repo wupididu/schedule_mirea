@@ -40,13 +40,16 @@ class HomePageController {
 
   Future<void> updateSubjects(DateTime dateTime) async {
     final subjects = <Subject?>[];
-    final groupCode = await _settings.getGroup();
-    if (groupCode == null) {
-      return;
-    }
 
     final currentWeek = CalendarUtils.getCurrentWeek(dateTime);
     final isEven = CalendarUtils.getCurrentWeek(dateTime) % 2 == 0;
+
+    final groupCode = await _settings.getGroup();
+    if (groupCode == null) {
+      _stateHolder.updateState(HomePageState(
+          subjects: subjects, selectedDate: dateTime, currentWeek: currentWeek));
+      return;
+    }
 
     subjects
       ..add(await _scheduleController.getSubject(

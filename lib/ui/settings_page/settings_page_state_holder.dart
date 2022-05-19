@@ -16,9 +16,16 @@ class SettingsPageStateHolder extends StateNotifier<SettingsPageState?> {
     );
   }
 
-  void updateGroupCode(String groupCode, List<String> loadedGroups) {
+  void updateGroupCode(String? groupCode, List<String> loadedGroups) {
     state = state?.copyWith(
       selectedGroupCode: groupCode,
+      groupCodeChangeMode: false,
+      loadedGroupCode: loadedGroups,
+    );
+  }
+
+  void updateLoadedGroups(List<String> loadedGroups) {
+    state = state?.copyWith(
       groupCodeChangeMode: false,
       loadedGroupCode: loadedGroups,
     );

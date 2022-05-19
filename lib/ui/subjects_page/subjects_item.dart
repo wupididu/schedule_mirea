@@ -60,15 +60,21 @@ class SubjectsItem extends StatelessWidget {
                               onPressed: () {
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => TasksPage(
-                                        name: name, subjectId: types![e]!)));
+                                          name: name,
+                                          subjectId: types![e]!,
+                                          typeOfSubject: e,
+                                        )));
                               },
                             ))
                         .toList(),
                   ));
         } else if (types!.length == 1) {
           Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) =>
-                  TasksPage(name: name, subjectId: types!.values.first)));
+              builder: (context) => TasksPage(
+                    name: name,
+                    subjectId: types!.values.first,
+                    typeOfSubject: types!.keys.first,
+                  )));
         }
       },
     );
