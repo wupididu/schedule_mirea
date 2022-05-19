@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:html/dom.dart';
 import 'package:http/http.dart' as http;
@@ -58,7 +59,13 @@ class PathSchedulerProvider {
     _group = groupCode;
     final response =
         await http.Client().get(Uri.parse("https://www.mirea.ru/schedule/"));
-    Document document = html.parse(response.body);
+
+    Document document = await compute(html.parse, response.body);
+
+    return await compute(_getLink,document);
+  }
+
+  String? _getLink(Document document) {
     final anchors = document.querySelectorAll('a');
 
     for (var anchor in anchors) {
