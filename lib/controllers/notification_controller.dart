@@ -101,12 +101,12 @@ class NotificationController {
 
   /// Если не передать код группы, то он возьмется из настроек
   Future<void> updateNotifications([String? groupCode]) async {
+    await AwesomeNotifications().cancelAll();
+
     final code = groupCode ?? await _settings.getGroup();
     if (code == null) {
-      throw Exception("Grope code not exist in the settings");
+      return;
     }
-
-    await AwesomeNotifications().cancelAll();
 
     final tasks = await _tasksController.getTasks(groupCode: code);
 
