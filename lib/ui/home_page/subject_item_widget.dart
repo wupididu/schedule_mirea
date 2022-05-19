@@ -54,7 +54,9 @@ class SubjectItemWidget extends StatelessWidget {
                               Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) => TasksPage(
                                       name: subject!.name,
-                                      subjectId: subject!.id)));
+                                      subjectId: subject!.id,
+                                      typeOfSubject: subject!.type,
+                                  )));
                             },
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,

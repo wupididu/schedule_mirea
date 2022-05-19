@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:schedule_mirea/db/models/state_of_task.dart';
 import 'package:schedule_mirea/methods_provider.dart';
+import 'package:schedule_mirea/models/subject_from_table.dart';
 import 'package:schedule_mirea/ui/task_editor/task_editor_page.dart';
 import 'package:schedule_mirea/ui/tasks_page/task_item.dart';
 
@@ -10,8 +11,13 @@ import '../consts.dart';
 class TasksPage extends StatefulWidget {
   final String name;
   final int subjectId;
+  final TypeOfSubject typeOfSubject;
 
-  const TasksPage({Key? key, required this.name, required this.subjectId})
+  const TasksPage(
+      {Key? key,
+      required this.name,
+      required this.subjectId,
+      required this.typeOfSubject})
       : super(key: key);
 
   @override
@@ -45,20 +51,27 @@ class _TasksPageState extends State<TasksPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Padding(
-          padding: const EdgeInsets.only(right: 40.0),
-          child: Center(
-            child: Text(
-              widget.name,
-              textAlign: TextAlign.center,
-              maxLines: 4,
-              style: const TextStyle(
-                color: kTextColor,
-                fontSize: 20,
-              ),
+        title: Center(
+          child: Text(
+            widget.name,
+            textAlign: TextAlign.center,
+            maxLines: 4,
+            style: const TextStyle(
+              color: kTextColor,
+              fontSize: 20,
             ),
           ),
         ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Icon(
+              _subjectTypeIcon[widget.typeOfSubject],
+              color: kAccentColor,
+              size: 40,
+            ),
+          ),
+        ],
         leading: Container(
           alignment: Alignment.topCenter,
           child: IconButton(
@@ -80,8 +93,8 @@ class _TasksPageState extends State<TasksPage> {
               stream: MethodsProvider.get().tasksController.tasksStream,
               builder: (context, snapshot) {
                 final notAcceptedTasks = snapshot.data
-                    ?.where(
-                        (element) => element.stateOfTask != StateOfTask.doneAndPassed)
+                    ?.where((element) =>
+                        element.stateOfTask != StateOfTask.doneAndPassed)
                     .map(
                       (e) => TaskItem(
                         task: e,
@@ -146,4 +159,10 @@ class _TasksPageState extends State<TasksPage> {
   void _onPressArrowBackButton() {
     Navigator.of(context).pop();
   }
+
+  final _subjectTypeIcon = {
+    TypeOfSubject.lek: Icons.book_outlined,
+    TypeOfSubject.lab: Icons.science,
+    TypeOfSubject.prac: Icons.edit,
+  };
 }
