@@ -53,9 +53,9 @@ class Settings {
     _controller.add(state!);
   }
 
-  Future<void> setGroup(String group) async {
+  Future<void> setGroup(String? group) async {
     await initialized;
-    await prefs.setString('group', group);
+    await prefs.setString('group', group ?? '');
 
     state = state!.copyWith(
       groupCode: group,
@@ -83,7 +83,8 @@ class Settings {
 
   Future<String?> getGroup() async {
     await initialized;
-    return prefs.getString('group');
+    final group = prefs.getString('group');
+    return group == '' ? null : group;
   }
 
   Future<TimeOfDay> getTimeNotification() async {
