@@ -75,13 +75,13 @@ class ScheduleConverter {
     }
 
     final String name = data.value ?? '';
-    final String type = _sheet.rows[rowIndex][colIndex + 1]?.value ?? '';
+    final String type = _sheet.rows[rowIndex][colIndex + 1]?.value.toString().toLowerCase() ?? '';
     late final TypeOfSubject typeOfSubject;
-    if (type == 'пр') {
+    if (type.contains('пр')) {
       typeOfSubject = TypeOfSubject.prac;
-    } else if (type == 'лаб') {
+    } else if (type.contains('лаб')) {
       typeOfSubject = TypeOfSubject.lab;
-    } else if (type == 'лк') {
+    } else if (type.contains('лк')) {
       typeOfSubject = TypeOfSubject.lek;
     } else {
       typeOfSubject = TypeOfSubject.none;
