@@ -83,6 +83,9 @@ class DB {
       throw Exception('group not exist');
     }
 
+
+    await deleteUselessSchedule(groupCode);
+
     final removedId = await _db.delete(DBGroups.tableName,
         where: '${DBGroups.columnGroupCode} = ?', whereArgs: [groupCode]);
 
@@ -91,7 +94,6 @@ class DB {
 
     await _deleteUselessSubject();
     await _deleteUselessTask();
-    await deleteUselessSchedule(groupCode);
   }
 
   Future<List<DBGroups>> getGroups() async {
