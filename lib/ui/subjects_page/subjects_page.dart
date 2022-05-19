@@ -31,8 +31,7 @@ class _SubjectsPageState extends State<SubjectsPage> {
   Widget build(BuildContext context) {
     final mapSubject = <String, Map<TypeOfSubject, int>>{};
     final subjects = _subjects.map((e) {
-      print(e);
-      final reg = RegExp(r'кр.|^[0-9].*н\s');
+      final reg = RegExp(r'кр+|[0-9].*н+[\s.]');
       final name = e.name.replaceAll(reg, '').trim();
       return e.copyWith(name: name);
     }).where((element) => !element.name.contains('..'));
