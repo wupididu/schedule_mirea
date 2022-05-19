@@ -98,8 +98,7 @@ class ScheduleConverter {
   }
 
   int _getCol(String group) {
-    print(group);
-    final col = _sheet.rows[1].indexWhere((element) => element?.value == group);
+    final col = _sheet.rows[1].indexWhere((element) => element?.value.toString().contains(group) ?? false);
 
     if (col == -1) {
       // TODO создать норм эксепшн
