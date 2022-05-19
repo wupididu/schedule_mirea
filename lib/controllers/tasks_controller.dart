@@ -63,7 +63,7 @@ class TasksController {
     final _groupCode = groupCode ?? await _settings.getGroup();
 
     if (_groupCode == null) {
-      throw Exception('Group not exist in the settings');
+      return [];
     }
 
     late List<DBTask> tasks;
@@ -91,7 +91,7 @@ class TasksController {
     final _groupCode = await _settings.getGroup();
 
     if (_groupCode == null) {
-      throw Exception('Group not exist in the settings');
+      return [];
     }
 
     final tasks = await _db.getTasksByDateTime(_groupCode, dateTime);
